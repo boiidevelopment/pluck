@@ -8,16 +8,11 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/**
- * Extracts all `data-*` attributes from a jQuery element as an object.
- * @param {jQuery} $el - A jQuery-wrapped DOM element
- * @returns {Object} A key-value object of all dataset attributes
- */
 export function extract_dataset($el) {
     const data = {};
     $.each($el.data(), (k, v) => {
@@ -27,14 +22,6 @@ export function extract_dataset($el) {
     return data;
 }
 
-/**
- * Sends a NUI callback to the UI builder handler.
- * @param {string} action - The name of the action to trigger.
- * @param {Object} [dataset={}] - The dataset to send with the request.
- * @param {Object} [additional={}] - Additional options for the request.
- * @param {boolean} [additional.should_close=false] - Whether the UI should be closed after the callback.
- * @returns {Promise<any|null>} The response from the NUI handler, or `null` if the request failed.
- */
 export async function send_nui_callback(action, dataset = {}, additional = {}) {
     const payload = {
         action,
@@ -52,12 +39,6 @@ export async function send_nui_callback(action, dataset = {}, additional = {}) {
     return await res.json();
 }
 
-/**
- * Resolves a safe image path for internal or external usage.
- * @param {string} image - The image filename, path, or full URL.
- * @param {string} base - The base directory path (e.g. "/pluck/ui/assets/logos/"). Ignored if image is a full path.
- * @returns {string} Resolved image path.
- */
 export function resolve_image_path(image, base = "/ui/assets/") {
     if (!image || typeof image !== "string") return "";
     if (/^(nui:\/\/|https?:\/\/)/i.test(image)) return image;
@@ -65,11 +46,6 @@ export function resolve_image_path(image, base = "/ui/assets/") {
     return base + image;
 }
 
-/**
- * Resolves the base path of the PLUCK UI library at runtime.
- * This allows the library to be relocated without updating imports.
- * @returns {string} Base path before `/ui/`
- */
 export function get_base_path() {
     const url = new URL(import.meta.url);
     const match = url.pathname.match(/^(.*?)(\/ui\/)/);

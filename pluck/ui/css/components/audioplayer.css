@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -35,7 +35,7 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .audio_artwork {
-    height: 70%;
+    height: 50%;
     width: auto;
     aspect-ratio: 1;
     border-radius: var(--border_radius_inner);
@@ -98,12 +98,12 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .audio_controls button {
-    padding: 0.3vh 1vh;
+    padding: 0.2vh 1vh;
     background: var(--background_overlay);
-    border: var(--border_dashed);
+    border: var(--border_light);
     border-radius: var(--border_radius_inner);
-    color: var(--text_primary);
-    font-size: 0.75rem;
+    color: var(--accent);
+    font-size: 0.5rem;
     cursor: pointer;
     transition: all 0.15s ease;
     opacity: 0.75;
@@ -112,13 +112,12 @@ GitHub: https://github.com/playingintraffic/pluck
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 3vh;
+    min-height: 2.3vh;
 }
 
 .audio_controls button:hover {
     opacity: 1;
-    border-color: var(--accent);
-    color: var(--accent);
+    color: var(--text_primary);
 }
 
 .audio_controls button:active {

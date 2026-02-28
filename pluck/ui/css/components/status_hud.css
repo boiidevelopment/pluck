@@ -1,0 +1,203 @@
+/*
+--------------------------------------------------
+
+This file is part of PLUCK.
+You are free to use these files within your own resources.
+Please retain the original credit and attached MIT license.
+Support honest development.
+
+Author: Case @ BOII Development
+License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
+GitHub: https://github.com/boiidevelopment/pluck
+
+--------------------------------------------------
+*/
+
+#status_hud {
+    position: fixed;
+    bottom: 2.5vh;
+    left: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4vh;
+    pointer-events: none;
+    font-family: var(--header_font);
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+}
+
+#status_hud.hud_hidden { opacity: 0; }
+
+.hud_conditions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vh;
+    width: 3.1vw;
+    margin-bottom: 1vh;
+}
+
+.hud_condition_icon {
+    width: 2.5vh;
+    height: 2.5vh;
+    opacity: 0.9;
+    animation: condition_pulse 1.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 3px currentColor);
+    flex-shrink: 0;
+}
+
+.hud_condition_icon svg { width: 100%; height: 100%; }
+
+@keyframes condition_pulse {
+    0%, 100% { opacity: 0.9; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.hud_player {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-top: 0.2vh solid var(--accent);
+    height: 3vw;
+}
+
+.hud_headshot {
+    width: 3vw;
+    height: 3vw;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--background_panel);
+    border-right: 0.1vh solid rgba(255, 255, 255, 0.06);
+}
+
+.hud_headshot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.7) brightness(0.9);
+}
+
+.hud_headshot_fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background_panel);
+}
+
+.hud_headshot_fallback svg {
+    width: 50%;
+    height: 50%;
+    color: var(--text_tertiary);
+}
+
+.hud_bars {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6vh;
+    background: var(--background_main);
+    width: 12vw;
+    border-right: 0.1vh solid rgba(255, 255, 255, 0.06);
+}
+
+.hud_bar_row {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    width: 95%;
+}
+
+.hud_bar_icon {
+    width: 1.25vh;
+    height: 1.75vh;
+    flex-shrink: 0;
+    color: var(--text_secondary);
+    margin-left: 0.25vw;
+}
+
+.hud_bar_icon svg { width: 100%; height: 100%; }
+
+.hud_bar_track {
+    flex: 1;
+    height: 0.35vh;
+    background: rgba(255, 255, 255, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.hud_bar_track::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent, transparent calc(10% - 1px),rgba(0, 0, 0, 0.5) calc(10% - 1px), rgba(0, 0, 0, 0.5) 10%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.hud_bar_fill {
+    height: 100%;
+    width: 100%;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.hud_bar_fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -1px;
+    width: 2px;
+    height: calc(100% + 2px);
+    background: inherit;
+    filter: brightness(2.5);
+}
+
+.hud_bar_fill.critical {
+    animation: bar_critical 0.55s ease-in-out infinite alternate;
+}
+
+@keyframes bar_critical {
+    from { opacity: 1; }
+    to { opacity: 0.25; }
+}
+
+#bar_fill_health { background: var(--status_health); }
+#bar_fill_armour { background: var(--status_armour); }
+
+/* Side panel — voice + temperature */
+.hud_side {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--background_main);
+    width: 4vw;
+}
+
+.hud_side_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    gap: 0.2vh;
+    padding: 0.4vh 0.5vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+}
+
+.hud_side_row:last-child {
+    border-bottom: none;
+}
+
+.hud_side_value {
+    font-family: var(--header_font);
+    font-size: 0.7rem;
+    color: var(--text_secondary);
+    letter-spacing: 0.05em;
+}
+
+.hud_side_value.voice_shout { color: var(--accent3); }
+.hud_side_value.voice_whisper { color: var(--accent4); }
+.hud_side_value.voice_normal { color: var(--text_secondary); }

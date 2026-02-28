@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -16,24 +16,13 @@ GitHub: https://github.com/playingintraffic/pluck
 import { Modal } from "../core/modal.js"
 import { send_nui_callback } from "./../utils.js";
 
-/**
- * @class Buttons
- * @description Renders a group of buttons with optional modals and custom dataset support.
- */
 export class Buttons {
-    /**
-     * @param {Object} config
-     * @param {Array<Object>} config.buttons
-     * @param {string} [config.classes=""]
-     * @param {boolean} [config.global=true]
-     */
     constructor({ buttons = [], classes = "", global = true }) {
         this.buttons = Array.isArray(buttons) ? buttons : Object.values(buttons);
         this.classes = classes;
         this.global = global;
     }
 
-    /** @returns {string} HTML for button group */
     get_html() {
         return `<div class="button_group ${this.classes}">` + this.buttons.map((b, i) => {
             const id = b.id || `btn_${i}`;
@@ -44,15 +33,11 @@ export class Buttons {
         }).join("") + `</div>`;
     }
 
-    /**
-     * @param {string} [container=".content"]
-     */
     append_to(container = ".content") {
         $(container).append($(this.get_html()));
     }
 }
 
-// Unified button handler
 $(document).off("click", ".btn").on("click", ".btn", function () {
     const $btn = $(this);
     const $modal = $btn.closest(".modal");

@@ -8,23 +8,25 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
 import { Builder } from "./builder.js";
+import { Sidebar } from "./core/sidebar.js";
 import { Notify } from "./components/notify.js";
 import { DUISprite } from "./components/dui_sprite.js";
 import { ProgressCircle } from "./components/progress_circle.js";
 import { ProgressBar } from "./components/progress_bar.js";
 import { Modal } from "./core/modal.js";
 import { ActionMenu } from "./components/action_menu.js";
-import { SlotPopup } from "./components/slot_popup.js";
+import { SlotPopup } from "./components/inventory_popup.js";
 import { InteractionHint } from "./components/interaction_hint.js";
 import { OptionsSelector } from "./components/option_selector.js";
 import { TaskList } from "./components/task_list.js";
 import { ControlDisplay } from "./components/control_display.js";
+import { StatusHUD } from "./components/status_hud.js";
 
 let interact_dui = null;
 let action_menu = null;
@@ -32,6 +34,8 @@ let interaction_hint = null;
 let options_selector = null;
 let task_list = null;
 let control_display = null;
+let sidebar = null;
+let status_hud = null;
 
 /**
  * Notification instance
@@ -47,26 +51,10 @@ const notify = new Notify({
  * Slot popup instance
  * @type {SlotPopup}
  */
-const slot_popup = new SlotPopup({
+const inventory_popup = new SlotPopup({
     position: "bottom-center"
 });
 
-window.test_slot_popup = () => {
-    const test_items = [
-        { item_id: "water", image: "/pluck/ui/assets/items/water.png", quantity: 5, action: "added", rarity: "common" },
-        { item_id: "weapon_pistol", image: "/pluck/ui/assets/items/weapon_pistol.png", quantity: 1, action: "added", rarity: "rare" },
-        { item_id: "cash", image: "/pluck/ui/assets/items/cash.png", quantity: 100, action: "removed", rarity: "uncommon" },
-        { item_id: "ammo_9mm", image: "/pluck/ui/assets/items/ammo_9mm.png", quantity: 50, action: "added", rarity: "legendary" }
-    ];
-
-    let delay = 0;
-    test_items.forEach((item, index) => {
-        setTimeout(() => {
-            slot_popup.show(item);
-        }, delay);
-        delay += 5000;
-    });
-};
 
 /**
  * Registered message handlers for NUI callbacks.
@@ -128,29 +116,6 @@ handlers.notify = (data) => {
 };
 
 /**
- * Show dui sprite.
- * @function handlers.show_dui
- * @param {Object} data - Message data object.
- * @param {Object} data.payload - DUI payload.
- */
-handlers.show_dui = (data) => {
-    if (interact_dui) {
-        interact_dui.close();
-    }
-    interact_dui = new DUISprite(data.payload);
-}
-
-/**
- * Hides dui sprite.
- * @function handlers.close_dui
- */
-handlers.close_dui = () => {
-    if (interact_dui) {
-        interact_dui.close();
-    }
-}
-
-/**
  * Show progress circle.
  * @function handlers.show_circle
  * @param {Object} data - Message data object.
@@ -192,44 +157,6 @@ handlers.show_modal = (data) => {
     });
 };
 
-window.test_modal = () => {
-    Modal.show({
-        title: "Test Modal",
-        options: [
-            {
-                id: "slider_1",
-                label: "Slider 1",
-                type: "range",
-                min: 0,
-                max: 100,
-                value: 50
-            },
-            {
-                id: "slider_2",
-                label: "Slider 2",
-                type: "range",
-                min: 0,
-                max: 100,
-                value: 50
-            }
-        ],
-        buttons: [
-            {
-                id: "confirm",
-                label: "Confirm",
-                on_action: function(ui_data) {
-                    console.log(ui_data.dataset);
-                }
-            },
-            {
-                id: "cancel",
-                label: "Cancel",
-                action: "close_modal"
-            }
-        ]
-    });
-};
-
 /**
  * Creates action menu
  * 
@@ -262,6 +189,12 @@ handlers.update_interaction_hint = (data) => {
 handlers.update_hint_quantity = (data) => {
     if (interaction_hint) {
         interaction_hint.update_quantity(data.payload.amount);
+    }
+}
+
+handlers.update_hint_status = (data) => {
+    if (interaction_hint) {
+        interaction_hint.update_status_text(data.payload.text);
     }
 }
 
@@ -368,33 +301,242 @@ handlers.destroy_controls = () => {
     }
 }
 
+/**
+ * Update slots UI 
+ */
+handlers.update_slots = (data) => {
+    if (!data || !data.items) return;
+
+    const ui = window.ui_instance;
+    if (!ui || !ui.content) return;
+
+    ui.content.update_slots_from_server(data.items);
+};
+
+/**
+ * Shows task list
+ */
+handlers.show_task_list = (data) => {
+    if (!task_list) {
+        task_list = new TaskList();
+    }
+    task_list.set_tasks(data.payload.title, data.payload.tasks);
+    task_list.show();
+}
+
+/**
+ * Hides task list
+ */
+handlers.hide_task_list = () => {
+    if (task_list) {
+        task_list.hide();
+    }
+}
+
+/**
+ * Destroys task list
+ */
+handlers.destroy_task_list = () => {
+    if (task_list) {
+        task_list.destroy();
+        task_list = null;
+    }
+}
+
+/**
+ * Updates specific task in task list
+ */
+handlers.update_task = (data) => {
+    if (!task_list) return;
+    
+    const { task_id, updates } = data.payload;
+    const tasks = task_list.tasks;
+    const task_index = tasks.findIndex(t => t.id === task_id);
+    
+    if (task_index !== -1) {
+        tasks[task_index] = { ...tasks[task_index], ...updates };
+        task_list.set_tasks(task_list.title, tasks);
+    }
+}
+
+/**
+ * Builds a standalone sidebar outside of the builder.
+ * @function handlers.build_sidebar
+ * @param {Object} data - Message data object.
+ * @param {Object} data.payload - Sidebar configuration.
+ */
+handlers.build_sidebar = (data) => {
+    if (!data || !data.payload) {
+        console.warn("[Sidebar] Missing payload.");
+        return;
+    }
+
+    if (sidebar) {
+        $("#ui_focus .sidebar").remove();
+    }
+
+    sidebar = new Sidebar(data.payload);
+    sidebar.append_to("#ui_focus");
+};
+
+/**
+ * Closes the standalone sidebar.
+ * @function handlers.close_sidebar
+ */
+handlers.close_sidebar = () => {
+    if (sidebar) {
+        $("#ui_focus .sidebar").remove();
+        sidebar = null;
+    }
+};
+
+/** Shows the status HUD, initializing it if needed.
+ * @function handlers.show_status_hud
+ */
+handlers.show_status_hud = () => {
+    if (!status_hud) status_hud = new StatusHUD()
+    status_hud.show()
+}
+
+/** Hides the status HUD.
+ * @function handlers.hide_status_hud
+ */
+handlers.hide_status_hud = () => {
+    if (status_hud) status_hud.hide()
+}
+
+/** Updates the status HUD with new data.
+ * @function handlers.update_status_hud
+ * @param {Object} data - Message data object.
+ * @param {Object} data.payload - Status data payload.
+ */
+handlers.update_status_hud = (data) => {
+    if (!data || !data.payload) return
+    if (!status_hud) status_hud = new StatusHUD()
+    status_hud.update(data.payload)
+}
+
+/** Sets the player headshot image on the status HUD.
+ * @function handlers.set_status_headshot
+ * @param {Object} data - Message data object.
+ * @param {Object} data.payload - Headshot payload.
+ * @param {string} data.payload.src - Image source URL.
+ */
+handlers.set_status_headshot = (data) => {
+    if (!data || !data.payload) return
+    if (!status_hud) status_hud = new StatusHUD()
+    status_hud.set_headshot(data.payload.src)
+}
+
+/** Destroys the status HUD instance.
+ * @function handlers.destroy_status_hud
+ */
+handlers.destroy_status_hud = () => {
+    if (status_hud) {
+        status_hud.destroy()
+        status_hud = null
+    }
+}
+
+/**
+ * Global message listener for all NUI messages.
+ * Routes each message to its corresponding handler.
+ */
+window.addEventListener("message", (event) => {
+    const { func } = event.data;
+    const handler = handlers[func];
+
+    if (typeof handler !== "function") {
+        console.warn(`Handler missing: ${func}`);
+        return;
+    }
+
+    handler(event.data);
+});
+
+/*
+window.test_modal = () => {
+    Modal.show({
+        title: "Test Modal",
+        options: [
+            {
+                id: "slider_1",
+                label: "Slider 1",
+                type: "range",
+                min: 0,
+                max: 100,
+                value: 50
+            },
+            {
+                id: "slider_2",
+                label: "Slider 2",
+                type: "range",
+                min: 0,
+                max: 100,
+                value: 50
+            }
+        ],
+        buttons: [
+            {
+                id: "confirm",
+                label: "Confirm",
+                on_action: function(ui_data) {
+                    console.log(ui_data.dataset);
+                }
+            },
+            {
+                id: "cancel",
+                label: "Cancel",
+                action: "close_modal"
+            }
+        ]
+    });
+};
+
+window.test_slot_popup = () => {
+    const test_items = [
+        { item_id: "water", image: "/libs/pluck/ui/assets/items/water.png", quantity: 5, action: "added", rarity: "common" },
+        { item_id: "weapon_pistol", image: "/libs/pluck/ui/assets/items/weapon_pistol.png", quantity: 1, action: "added", rarity: "rare" },
+        { item_id: "cash", image: "/libs/pluck/ui/assets/items/cash.png", quantity: 100, action: "removed", rarity: "uncommon" },
+        { item_id: "ammo_pistol", image: "/libs/pluck/ui/assets/items/ammo_pistol.png", quantity: 50, action: "added", rarity: "legendary" }
+    ];
+
+    let delay = 0;
+    test_items.forEach((item, index) => {
+        setTimeout(() => {
+            inventory_popup.show(item);
+        }, delay);
+        delay += 5000;
+    });
+};
+
 window.test_fishing_ui = () => {
     const test_baits = [
         {
             id: 'weed',
             label: 'Weed',
-            image: '/pluck/ui/assets/items/weed.png',
+            image: '/libs/pluck/ui/assets/items/weed.png',
             quantity: 5,
             enabled: true
         },
         {
             id: 'cash',
             label: 'Cash',
-            image: '/pluck/ui/assets/items/cash.png',
+            image: '/libs/pluck/ui/assets/items/cash.png',
             quantity: 2,
             enabled: true
         },
         {
             id: 'weapon_pistol',
             label: 'Pistol',
-            image: '/pluck/ui/assets/items/weapon_pistol.png',
+            image: '/libs/pluck/ui/assets/items/weapon_pistol.png',
             quantity: 0,
             enabled: false
         },
         {
             id: 'tomato',
             label: 'Tomato',
-            image: '/pluck/ui/assets/items/tomato.png',
+            image: '/libs/pluck/ui/assets/items/tomato.png',
             quantity: 10,
             enabled: true
         }
@@ -408,7 +550,7 @@ window.test_fishing_ui = () => {
 
     setTimeout(() => {
         interaction_hint.set_data({
-            image: '/pluck/ui/assets/items/tomato.png',
+            image: '/libs/pluck/ui/assets/items/tomato.png',
             label: 'Tomato',
             quantity: 5,
             action_text: 'Press F to thow or E to change item'
@@ -506,64 +648,6 @@ window.test_action_menu = () => {
     ]);
 };
 
-/**
- * Update slots UI 
- */
-handlers.update_slots = (data) => {
-    if (!data || !data.items) return;
-
-    const ui = window.ui_instance;
-    if (!ui || !ui.content) return;
-
-    ui.content.update_slots_from_server(data.items);
-};
-
-/**
- * Shows task list
- */
-handlers.show_task_list = (data) => {
-    if (!task_list) {
-        task_list = new TaskList();
-    }
-    task_list.set_tasks(data.payload.title, data.payload.tasks);
-    task_list.show();
-}
-
-/**
- * Hides task list
- */
-handlers.hide_task_list = () => {
-    if (task_list) {
-        task_list.hide();
-    }
-}
-
-/**
- * Destroys task list
- */
-handlers.destroy_task_list = () => {
-    if (task_list) {
-        task_list.destroy();
-        task_list = null;
-    }
-}
-
-/**
- * Updates specific task in task list
- */
-handlers.update_task = (data) => {
-    if (!task_list) return;
-    
-    const { task_id, updates } = data.payload;
-    const tasks = task_list.tasks;
-    const task_index = tasks.findIndex(t => t.id === task_id);
-    
-    if (task_index !== -1) {
-        tasks[task_index] = { ...tasks[task_index], ...updates };
-        task_list.set_tasks(task_list.title, tasks);
-    }
-}
-
 window.test_task_list = () => {
     if (!task_list) {
         task_list = new TaskList();
@@ -640,19 +724,4 @@ window.test_controls = () => {
     ]);
     control_display.show();
 }
-
-/**
- * Global message listener for all NUI messages.
- * Routes each message to its corresponding handler.
- */
-window.addEventListener("message", (event) => {
-    const { func } = event.data;
-    const handler = handlers[func];
-
-    if (typeof handler !== "function") {
-        console.warn(`Handler missing: ${func}`);
-        return;
-    }
-
-    handler(event.data);
-});
+*/

@@ -8,56 +8,72 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
 .slot_hotkey {
     position: absolute;
-    top: 0.5vh;
-    left: 0.5vh;
-    background: var(--background_overlay);
-    color: var(--text_primary);
-    font-size: 0.75rem;
+    top: 0.4vh;
+    left: 0.4vh;
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
+    color: var(--accent);
+    font-size: 0.6rem;
     font-weight: 700;
-    padding: 0.3vh 0.6vh;
-    border-radius: var(--border_radius_inner);
+    padding: 0.2vh 0.5vh;
     z-index: 4;
     pointer-events: none;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
 }
 
 .slot_groups_wrapper {
     display: flex;
     flex-direction: column;
-    gap: 2vh;
+    gap: 0;
     width: 100%;
 }
 
 .slot_group {
     display: flex;
     flex-direction: column;
-    gap: 1vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+}
+
+.slot_group:last-child {
+    border-bottom: none;
 }
 
 .slot_group_title {
-    background: var(--background_main);
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_inner);
+    background: var(--background_overlay);
+    border: none;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
     user-select: none;
     height: 3.5vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5vh 1vh;
+    padding: 0 1vh;
+    position: relative;
+}
+
+.slot_group_title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.2vh;
+    background: var(--accent);
 }
 
 .slot_group_title_inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    padding: 0.8vh 1.5vh;
+    padding: 0;
     text-transform: uppercase;
 }
 
@@ -65,18 +81,21 @@ GitHub: https://github.com/playingintraffic/pluck
     display: flex;
     align-items: center;
     gap: 0.6vh;
+    font-size: 0.68rem;
+    letter-spacing: 0.08rem;
+    color: var(--text_secondary);
     line-height: 1;
 }
 
 .slot_group_title_label i {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    color: var(--accent);
     line-height: 1;
-    
 }
 
 .slot_group_title.collapsible {
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: background 0.15s;
 }
 
 .slot_group_title.collapsible:hover {
@@ -84,19 +103,20 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .slot_group_title span {
-    font-size: 0.85rem;
+    font-size: 0.65rem;
     color: var(--text_secondary);
-
     display: flex;
     align-items: center;
     gap: 0.5vh;
     line-height: 1;
+    letter-spacing: 0.03rem;
+    opacity: 0.7;
 }
 
 .slots_container {
     display: grid;
-    gap: 1.5vh;
-    padding: 1vh 0;
+    gap: 0.5vh;
+    padding: 0.75vh;
     transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
     max-height: 10000px;
     opacity: 1;
@@ -114,25 +134,21 @@ GitHub: https://github.com/playingintraffic/pluck
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    background: var(--background_main);
-    border: var(--border_dark);
-    border-radius: var(--border_radius_inner);
-    box-shadow: var(--shadow_medium);
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
     cursor: default;
     overflow: hidden;
     position: relative;
-
-    transition: background 0.15s ease, border-color 0.15s ease;
+    transition: background 0.15s, border-color 0.15s;
 }
 
 .body_slot:hover {
     background: var(--background_hover);
-    border-color: var(--accent);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .body_slot.slot_empty {
-    border-color: var(--text_tertiary);
+    border-color: rgba(255, 255, 255, 0.04);
 }
 
 .body_slot.slot_occupied {
@@ -144,54 +160,34 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .body_slot.slot_drop_hover {
-    background: rgba(100, 200, 255, 0.2) !important;
-    outline: 3px dashed var(--accent);
-    outline-offset: -3px;
+    background: rgba(255, 255, 255, 0.05) !important;
+    outline: 0.1vh dashed var(--accent);
+    outline-offset: -2px;
 }
 
 .body_slot.dragging {
-    opacity: 0.4;
+    opacity: 0.3;
 }
 
 .body_slot::before {
     content: "";
     position: absolute;
     inset: 0;
-    opacity: 0.55;
+    opacity: 0.4;
     pointer-events: none;
 }
 
-.body_slot.rarity_common::before { 
-    background: linear-gradient(to top, var(--rarity_common), transparent 70%); 
-}
-.body_slot.rarity_uncommon::before { 
-    background: linear-gradient(to top, var(--rarity_uncommon), transparent 70%); 
-}
-.body_slot.rarity_rare::before { 
-    background: linear-gradient(to top, var(--rarity_rare), transparent 70%); 
-}
-.body_slot.rarity_epic::before { 
-    background: linear-gradient(to top, var(--rarity_epic), transparent 70%); 
-}
-.body_slot.rarity_legendary::before { 
-    background: linear-gradient(to top, var(--rarity_legendary), transparent 70%); 
-}
+.body_slot.rarity_common::before    { background: linear-gradient(to top, var(--rarity_common), transparent 70%); }
+.body_slot.rarity_uncommon::before  { background: linear-gradient(to top, var(--rarity_uncommon), transparent 70%); }
+.body_slot.rarity_rare::before      { background: linear-gradient(to top, var(--rarity_rare), transparent 70%); }
+.body_slot.rarity_epic::before      { background: linear-gradient(to top, var(--rarity_epic), transparent 70%); }
+.body_slot.rarity_legendary::before { background: linear-gradient(to top, var(--rarity_legendary), transparent 70%); }
 
-.body_slot.rarity_common { 
-    border-color: var(--rarity_common); 
-}
-.body_slot.rarity_uncommon { 
-    border-color: var(--rarity_uncommon); 
-}
-.body_slot.rarity_rare { 
-    border-color: var(--rarity_rare); 
-}
-.body_slot.rarity_epic { 
-    border-color: var(--rarity_epic); 
-}
-.body_slot.rarity_legendary { 
-    border-color: var(--rarity_legendary); 
-}
+.body_slot.rarity_common    { border-color: var(--rarity_common); }
+.body_slot.rarity_uncommon  { border-color: var(--rarity_uncommon); }
+.body_slot.rarity_rare      { border-color: var(--rarity_rare); }
+.body_slot.rarity_epic      { border-color: var(--rarity_epic); }
+.body_slot.rarity_legendary { border-color: var(--rarity_legendary); }
 
 .body_slot_image {
     display: flex;
@@ -220,16 +216,17 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .slot_quantity {
-    margin-right: 0.5vh;
+    margin-right: 0.4vh;
     margin-bottom: 0.2vh;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: 600;
     color: var(--text_primary);
+    letter-spacing: 0.03rem;
 }
 
 .slot_progress {
     width: 100%;
-    height: 0.5vh;
+    height: 0.2vh;
     background: rgba(0, 0, 0, 0.4);
     overflow: hidden;
 }
@@ -239,29 +236,12 @@ GitHub: https://github.com/playingintraffic/pluck
     transition: width 0.2s ease;
 }
 
-.body_slot.rarity_common .slot_progress_fill { 
-    background: var(--rarity_common); 
-}
-
-.body_slot.rarity_uncommon .slot_progress_fill { 
-    background: var(--rarity_uncommon); 
-}
-
-.body_slot.rarity_rare .slot_progress_fill { 
-    background: var(--rarity_rare); 
-}
-
-.body_slot.rarity_epic .slot_progress_fill{ 
-    background: var(--rarity_epic); 
-}
-
-.body_slot.rarity_legendary .slot_progress_fill { 
-    background: var(--rarity_legendary); 
-}
-
-.body_slot:not([class*="rarity_"]) .slot_progress_fill { 
-    background: var(--accent); 
-}
+.body_slot.rarity_common    .slot_progress_fill { background: var(--rarity_common); }
+.body_slot.rarity_uncommon  .slot_progress_fill { background: var(--rarity_uncommon); }
+.body_slot.rarity_rare      .slot_progress_fill { background: var(--rarity_rare); }
+.body_slot.rarity_epic      .slot_progress_fill { background: var(--rarity_epic); }
+.body_slot.rarity_legendary .slot_progress_fill { background: var(--rarity_legendary); }
+.body_slot:not([class*="rarity_"]) .slot_progress_fill { background: var(--accent); }
 
 .slots_container_positioned {
     position: relative;
@@ -274,7 +254,7 @@ GitHub: https://github.com/playingintraffic/pluck
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1vh;
+    padding: 0.5vh;
     gap: 0.5vh;
 }
 
@@ -284,16 +264,16 @@ GitHub: https://github.com/playingintraffic/pluck
 
 .slot_label {
     width: 100%;
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_inner);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
     color: var(--text_secondary);
     text-align: center;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.08rem;
     white-space: nowrap;
     pointer-events: none;
     background: var(--background_main);
-    padding: 0.25vh 0.5vh;
+    padding: 0.2vh 0.5vh;
 }
 
 .positioned_slot_wrapper,

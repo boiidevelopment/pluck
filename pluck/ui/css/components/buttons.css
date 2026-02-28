@@ -8,58 +8,66 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/* Group */
 .button_group {
     display: flex;
     justify-content: space-between;
-    gap: 1vw;
+    gap: 1vh;
 }
 
-/* Button */
 .button_group .btn {
-    padding: var(--button_padding);
-    font-size: 1rem;
-    font-family: var(--header_font);
-    background: var(--background_main);
-    color: var(--text_primary);
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_outer);
+    padding: 0.5vh 1.5vh;
+    font-size: 0.7rem;
+    font-family: var(--text_font);
+    background: var(--background_panel);
+    color: var(--text_secondary);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-right: none;
     cursor: pointer;
-    transition: background opacity 0.2s ease, transform 0.1s ease;
-    opacity: 0.9;
+    transition: background 0.15s, color 0.15s;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5vh;
     text-transform: uppercase;
-    padding: 0.25vh 1.5vh;
+    letter-spacing: 0.08rem;
+    position: relative;
 }
 
-/* Hover / Active */
-.button_group .btn:hover {
-    opacity: 1.0;
-    transform: scale(1.02);
+.button_group .btn:last-child {
+    border-right: 0.1vh solid rgba(255, 255, 255, 0.06);
 }
+
 .button_group .btn:active {
-    opacity: 1.0;
-    background: var(--accent4);
-}
-.btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    background: var(--background_main);
 }
 
-/* Button Styles -- will add more later*/
-.btn.primary {
-    background: var(--accent2);
-    color: var(--text_primary);
+.btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
 }
+
+.btn.primary {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+}
+
+.btn.primary:hover {
+    background: var(--accent2);
+}
+
 .btn.secondary {
-    background: var(--accent3);
+    background: var(--background_panel);
+    color: var(--text_secondary);
+}
+
+.btn.secondary:hover {
     color: var(--text_primary);
+    background: var(--background_hover);
 }

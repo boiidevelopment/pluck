@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 ]]
@@ -100,6 +100,11 @@ if not pluck.is_server then
 
     pluck.update_hint_quantity = update_hint_quantity
     exports("update_hint_quantity", update_hint_quantity)
+
+    local function update_hint_status(text)
+        SendNUIMessage({ func = "update_hint_status", payload = { text = text } })
+    end
+    pluck.update_hint_status = update_hint_status
 
     --- Clears interaction hint
     local function clear_interaction_hint()

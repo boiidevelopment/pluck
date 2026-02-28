@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -16,18 +16,7 @@ GitHub: https://github.com/playingintraffic/pluck
 import { Buttons } from "../components/buttons.js"
 import { resolve_image_path } from "../utils.js"
 
-/**
- * @class Cards
- * @description Renders a responsive grid/flex layout of cards with optional images, buttons, and tooltips.
- */
 export class Cards {
-    /**
-     * @param {Object} config
-     * @param {string} [config.title=""]
-     * @param {Object|null} [config.search=null]
-     * @param {Object} [config.layout={}]
-     * @param {Array<Object>} [config.cards=[]]
-     */
     constructor({ title = "", search = null, layout = {}, cards = [] }) {
         this.title = title;
         this.search = search;
@@ -40,18 +29,12 @@ export class Cards {
         this.grid_columns = Number(layout.columns) || 0;
     }
 
-    /** @returns {string} HTML for card container */
     get_html() {
         const style = this.grid_columns > 0 ? `style="grid-template-columns: repeat(${this.grid_columns}, 1fr);"` : "";
         const content = this.cards.map((c, i) => this.create_card(c, i)).join("");
         return `<div class="cards_container ${this.scroll_x} ${this.scroll_y}" ${style}>${content}</div>`.trim();
     }
 
-    /**
-     * @param {Object} card
-     * @param {number} index
-     * @returns {string} HTML for individual card
-     */
     create_card(card, index) {
         const title = card.title ? `<h4>${card.title}</h4>` : "";
         const desc = card.description ? `<p>${card.description}</p>` : "";
@@ -59,7 +42,7 @@ export class Cards {
         const dataset_attrs = card.dataset ? Object.entries(card.dataset).map(([k, v]) => `data-${k}="${String(v)}"`).join(" ") : "";
         const tooltip_data = card.on_hover ? `data-tooltip='${JSON.stringify({ on_hover: card.on_hover }).replace(/'/g, "&apos;").replace(/"/g, "&quot;")}'` : "";
 
-        const rarity = card.on_hover.rarity?.toLowerCase();
+        const rarity = card.on_hover?.rarity?.toLowerCase() || "common";
         const rarity_class = rarity && rarity !== "common" ? `rarity_${rarity}` : "";
         const img_url = card.image ? resolve_image_path(card.image, "/pluck/ui/assets/cards/") : null;
         const img = img_url ? `<div class="body_card_image ${rarity_class}"><div class="body_card_image_wrapper"><img src="${img_url}" alt="cardimg"></div></div>` : "";

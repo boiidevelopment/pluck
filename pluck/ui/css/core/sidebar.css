@@ -8,59 +8,28 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/* Container */
-#sidebar_container {
-    position: absolute;
-    height: calc(100vh - 16vh);
-    width: 100%;
-    z-index: 13;
-    display: flex;
-    align-items: center;
-    pointer-events: none;
-}
-
-/* Sidebar */
 .sidebar {
-    position: absolute;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
     height: fit-content;
     max-height: calc(90vh - 16vh);
-    background: var(--gradient_fade_center);
-    padding: 1vh 3vh;
+    background: var(--background_panel);
+    border: 0.2vh solid rgba(255, 255, 255, 0.06);
+    border-top: 0.2vh solid var(--accent);
+    padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     overflow-y: auto;
     scrollbar-width: none;
     min-width: 14vw;
     max-width: 18vw;
     pointer-events: auto;
-}
-
-.sidebar::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(180deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-}
-
-.sidebar::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(180deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
 }
 
 .sidebar.right {
@@ -71,31 +40,25 @@ GitHub: https://github.com/playingintraffic/pluck
     left: 2vw;
 }
 
-/* Titles */
 .sidebar_title {
     font-family: var(--header_font);
-    font-size: 1.5rem;
-    padding: 0 2vh;
-    padding-bottom: 0.8vh;
-    color: var(--text_primary);
-    border-bottom: var(--border_light);
+    font-size: 0.7rem;
+    padding: 1vh 1.5vh;
+    color: var(--accent);
+    border-bottom: 0.2vh solid rgba(255, 255, 255, 0.06);
     text-transform: uppercase;
-    text-align: center;
+    letter-spacing: 0.15rem;
 }
 
-/*  Body */
 .sidebar_body {
-    padding: 1vh;
+    padding: 0.5vh;
     display: flex;
     flex-direction: column;
-    gap: 1vh;
 }
 
-/* Items */
 .sidebar_item_wrapper {
     display: flex;
     flex-direction: column;
-    gap: 0.5vh;
 }
 
 .sidebar_item {
@@ -103,62 +66,79 @@ GitHub: https://github.com/playingintraffic/pluck
     align-items: center;
     gap: 1vh;
     cursor: pointer;
-    transition: all 0.2s ease;
-    padding: 1vh;
-    border: 0.2vh solid transparent;
-    background: var(--background_panel);
-    border-radius: var(--border_radius_inner);
-    box-shadow: var(--shadow_soft);
+    transition: background 0.15s;
+    padding: 0.8vh 1.5vh;
+    background: transparent;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+    position: relative;
+}
+
+.sidebar_item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.15s;
+}
+
+.sidebar_item:hover::before {
+    width: 0.2vh;
 }
 
 .sidebar_item:hover {
-    background: var(--background_main);
-    border: var(--border_dashed);
+    background: var(--background_hover);
 }
 
-/* Icons */
 .sidebar_icon {
-    width: 2vh;
-    height: 2vh;
+    width: 1.8vh;
+    height: 1.8vh;
     object-fit: contain;
     flex-shrink: 0;
-    color: var(--text_primary);
+    color: var(--text_secondary);
+    transition: color 0.15s;
 }
 
-/* Text */
+.sidebar_item:hover .sidebar_icon {
+    color: var(--accent);
+}
+
 .sidebar_text {
     font-family: var(--text_font);
-    font-size: 1rem;
+    font-size: 0.8rem;
+    color: var(--text_secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    transition: color 0.15s;
+}
+
+.sidebar_item:hover .sidebar_text {
     color: var(--text_primary);
 }
 
-/* Buttons */
 .sidebar_button_group {
     display: flex;
     flex-direction: column;
-    gap: 0.5vh;
 }
 
-/* Submenu */
 .sidebar_submenu {
-    margin-left: 2vh;
-    padding-left: 1vh;
-    border-left: var(--border_light);
     display: none;
     flex-direction: column;
-    gap: 0.5vh;
-    margin-top: 0.5vh;
+    background: var(--background_main);
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
 }
 
-/* Submenu Items */
 .sidebar_subitem {
     display: flex;
     align-items: center;
     gap: 1vh;
     cursor: pointer;
-    transition: all 0.2s ease;
-    padding: 0.8vh 1vh;
-    background: transparent;
+    transition: background 0.15s;
+    padding: 0.7vh 3vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+    position: relative;
 }
 
 .sidebar_subitem:hover {
@@ -166,6 +146,57 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .sidebar_subitem .sidebar_text {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.sidebar_subitem:hover .sidebar_text {
+    opacity: 1;
+    color: var(--text_primary);
+}
+
+.sidebar_chevron {
+    margin-left: auto;
+    font-size: 0.6rem;
+    color: var(--text_tertiary);
+    transition: transform 0.2s ease;
+}
+
+.sidebar_chevron.open {
+    transform: rotate(180deg);
+}
+
+.sidebar_subitem_wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar_sub_submenu {
+    display: none;
+    flex-direction: column;
+    background: var(--background_overlay);
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+}
+
+.sidebar_sub_subitem {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.6vh 4.5vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+    transition: background 0.15s;
+}
+
+.sidebar_sub_subitem:hover {
+    background: var(--background_hover);
+}
+
+.sidebar_sub_subitem .sidebar_text {
+    font-size: 0.7rem;
+    opacity: 0.6;
+}
+
+.sidebar_sub_subitem:hover .sidebar_text {
+    opacity: 1;
     color: var(--text_primary);
 }

@@ -8,42 +8,27 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
 .footer {
-    position: fixed;
+    position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 8vh;
-    background: var(--gradient_fade_center);
+    background: var(--background_main);
+    border-top: 0.2vh solid var(--accent);
     color: var(--text_primary);
-    font-family: var(--header_font);
-    box-shadow: var(--inset_shadow_large);
+    font-family: var(--text_font);
     z-index: 11;
-
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
-    opacity: 1;
     user-select: none;
-    position: relative;
-}
-
-.footer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
 }
 
 .footer_section {
@@ -51,24 +36,25 @@ GitHub: https://github.com/playingintraffic/pluck
     flex-direction: row;
     align-items: center;
     height: 100%;
-    min-width: 0;
-    padding: 0 3vw;
+    padding: 0 2vw;
     overflow: hidden;
 }
 
 .footer_section.left {
     flex: 0 0 auto;
     justify-content: flex-start;
+    border-right: 0.1vh solid rgba(255, 255, 255, 0.04);
 }
 
 .footer_section.center {
-    flex: 0 0 auto;
+    flex: 1;
     justify-content: center;
 }
 
 .footer_section.right {
     flex: 0 0 auto;
     justify-content: flex-end;
+    border-left: 0.1vh solid rgba(255, 255, 255, 0.04);
 }
 
 .footer_group,
@@ -82,50 +68,55 @@ GitHub: https://github.com/playingintraffic/pluck
 .footer_action {
     display: flex;
     align-items: center;
+    gap: 0.5vw;
     opacity: 0.9;
-    font-size: 1rem;
-    transition: opacity 0.2s ease;
+    font-size: 0.75rem;
+    transition: opacity 0.15s;
     cursor: pointer;
 }
 
+.footer_action:hover {
+    opacity: 1;
+}
+
 .footer_action.disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     pointer-events: none;
 }
 
 .footer_key {
-    background: var(--background_main);
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_outer);
-    padding: 0.2vh 0.8vh;
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
+    padding: 0.3vh 0.8vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text_primary);
-    opacity: 0.9;
-    margin: 0.35vh 0;
+    color: var(--accent);
     white-space: nowrap;
-    font-size: 1rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+    font-family: var(--text_font);
 }
 
 .footer_label {
-    font-size: 1rem;
-    color: var(--text_primary);
-    padding: 0.1vh 0.5vh;
+    font-size: 0.72rem;
+    color: var(--text_secondary);
     text-transform: uppercase;
+    letter-spacing: 0.08rem;
 }
 
 .footer_text {
-    font-size: 1rem;
+    font-size: 0.72rem;
     color: var(--text_secondary);
     display: flex;
     align-items: center;
-    padding: 0.25vh 1vw;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
 }
 
 .footer_button_group {
     display: flex;
-    gap: 1vw;
     align-items: center;
 }

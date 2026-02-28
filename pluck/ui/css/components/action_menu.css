@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -24,7 +24,7 @@ GitHub: https://github.com/playingintraffic/pluck
     overflow: visible;
 }
 
-.actions.left, 
+.actions.left,
 .actions.right {
     display: flex;
     flex-direction: column;
@@ -33,32 +33,24 @@ GitHub: https://github.com/playingintraffic/pluck
     flex-wrap: wrap;
 }
 
-.actions.left {
-    align-items: flex-end;
-}
-
-.actions.right {
-    align-items: flex-start; 
-}
+.actions.left  { align-items: flex-end; }
+.actions.right { align-items: flex-start; }
 
 .action {
     display: flex;
     position: relative;
     width: fit-content;
-    margin-right: 1.5vh;
-    margin-left: 1.5vh;
+    margin: 0.3vh 1.5vh;
 }
 
 .action .label_container {
     display: inline-flex;
     align-items: center;
-    text-align: center;
     width: fit-content;
-    border-radius: var(--border_radius_outer);
     justify-content: space-between;
-    gap: 1vh;
-    opacity: 0.95;
-    padding: 1vh;
+    gap: 0.5vh;
+    cursor: pointer;
+    transition: opacity 0.15s;
 }
 
 .action .label_container:hover {
@@ -67,55 +59,57 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .action .label {
-    padding: 0.7vh 2vh;
-    border-radius: var(--border_radius_inner);
-    border: var(--border_dashed);
+    padding: 0.5vh 1.25vh;
     white-space: nowrap;
-    font-size: 0.8rem;
-    background-color: var(--background_main);
+    font-size: 0.68rem;
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    color: var(--text_secondary);
+    font-family: var(--text_font);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    transition: color 0.15s, background 0.15s;
+}
+
+.action .label_container:hover .label {
     color: var(--text_primary);
-    font-family: var(--text_font_family);
-    box-shadow: var(--shadow_medium);
+    background: var(--background_hover);
 }
 
 .action .icon {
-    background-color: var(--background_main);
-    border-radius: var(--border_radius_inner);
-    border: var(--border_dashed);
-    padding: 0.75vh 1vh;
-    margin: 0;
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.1);
+    padding: 0.5vh 0.75vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 0.8rem;
-    box-shadow: var(--shadow_medium);
+    font-size: 0.75rem;
     color: var(--accent);
+    transition: background 0.15s;
+}
+
+.action .label_container:hover .icon {
+    background: var(--background_hover);
 }
 
 .center_button {
     background: var(--background_main);
-    border-radius: var(--border_radius_inner);
-    border: var(--border_dashed);
-    margin: 0;
+    border: 0.1vh solid rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 0.8rem;
-    color: var(--text_primary);
-    opacity: 0.95;
-    user-select: none;
-    box-shadow: var(--shadow_medium);
+    font-size: 0.7rem;
     color: var(--accent);
+    user-select: none;
     padding: 0.75vh 1vh;
+    transition: background 0.15s;
 }
 
 .center_button:hover {
-    opacity: 1;
+    background: var(--background_hover);
     cursor: pointer;
 }
 
 .center_button i {
-    margin-left: 1px;
-    margin-top: 3px;
     padding: 1px;
 }

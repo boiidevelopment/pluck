@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -18,66 +18,48 @@ GitHub: https://github.com/playingintraffic/pluck
     top: 20vh;
     left: 2vw;
     display: none;
-    text-align: center;
-    padding: 2vh 4vh;
-    background: var(--gradient_fade_center);
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-top: 0.2vh solid var(--accent);
     color: var(--text_primary);
     width: 25vw;
     pointer-events: auto;
 }
 
-#task_list_section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-}
-
-#task_list_section::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-}
-
 #task_list_section h3 {
-    position: relative;
     display: flex;
     flex-direction: column;
-    color: var(--text_primary);
+    color: var(--accent);
     font-family: var(--header_font);
-    border-bottom: var(--border_light);
-    font-size: 2rem;
-    margin-bottom: 1vh;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15rem;
+    padding: 0.75vh 1.25vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .task_list_container {
     width: 100%;
     display: block;
     max-height: 35vh;
-    overflow-y: scroll;
-    padding-right: 0.5vh;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 .task_list_item {
-    width: calc(100% - 1vh);
+    width: 100%;
     position: relative;
-    padding: 0.5vh;
-    margin: 0 auto 1.5vh auto;
-    background: var(--background_main);
-    border-radius: var(--border_radius_inner);
-    box-shadow: var(--shadow_medium);
+    padding: 0.75vh 1.25vh;
+    background: transparent;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.15s;
     text-align: left;
+}
+
+.task_list_item:last-child {
+    border-bottom: none;
 }
 
 .task_list_item:hover {
@@ -85,55 +67,48 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .task_list_item.completed {
-    opacity: 0.6;
+    opacity: 0.4;
 }
 
 .task_list_status_badge {
     position: absolute;
-    right: 0.5vh;
-    top: 0.5vh;
+    right: 1vh;
+    top: 50%;
+    transform: translateY(-50%);
     text-transform: uppercase;
-    background: var(--background_overlay);
-    color: var(--text_primary);
-    border: var(--border_dashed);
-    padding: 0.5vh 0.75vh;
-    font-size: 0.6rem;
+    background: transparent;
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
+    padding: 0.2vh 0.6vh;
+    font-size: 0.58rem;
     font-family: var(--text_font);
     white-space: nowrap;
-}
-
-.task_list_status_badge.completed {
-    color: var(--notify_success);
-    border-color: var(--notify_success);
-}
-
-.task_list_status_badge.in_progress {
-    color: var(--notify_warning);
-    border-color: var(--notify_warning);
-}
-
-.task_list_status_badge.pending {
+    letter-spacing: 0.05rem;
     color: var(--text_secondary);
-    border-color: var(--text_secondary);
 }
+
+.task_list_status_badge.completed  { color: var(--notify_success); border-color: var(--notify_success); }
+.task_list_status_badge.in_progress { color: var(--notify_warning); border-color: var(--notify_warning); }
+.task_list_status_badge.pending    { color: var(--text_secondary);  border-color: rgba(255, 255, 255, 0.08); }
 
 .task_list_content {
-    min-height: fit-content;
     display: flex;
     flex-direction: column;
-    gap: 0.5vh;
+    gap: 0.4vh;
+    padding-right: 6vh;
 }
 
 .task_list_label {
     font-family: var(--text_font);
-    font-size: 1rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--text_primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
 }
 
 .task_list_description {
     font-family: var(--text_font);
-    font-size: 0.8rem;
+    font-size: 0.68rem;
     color: var(--text_secondary);
     line-height: 1.4;
 }
@@ -142,43 +117,49 @@ GitHub: https://github.com/playingintraffic/pluck
     display: flex;
     align-items: center;
     gap: 1vh;
+    margin-top: 0.4vh;
 }
 
 .task_list_progress_bar {
     flex: 1;
-    height: 0.8vh;
+    height: 0.2vh;
     background: var(--background_overlay);
-    border-radius: 2px;
     overflow: hidden;
-    box-shadow: var(--inset_shadow_small);
 }
 
 .task_list_progress_fill {
     height: 100%;
     background: var(--accent);
     transition: width 0.3s ease;
-    border-radius: 1px;
-    box-shadow: var(--inset_shadow_small);
 }
 
 .task_list_progress_text {
     font-family: var(--text_font);
-    font-size: 1.4vh;
+    font-size: 0.62rem;
     color: var(--text_secondary);
     min-width: 5vh;
     text-align: right;
+    letter-spacing: 0.03rem;
 }
 
 .task_list_close {
     background: none;
     border: none;
-    font-size: 1.4vh;
+    border-top: 0.1vh solid rgba(255, 255, 255, 0.06);
+    font-size: 0.65rem;
     color: var(--text_secondary);
-    opacity: 0.9;
     font-family: var(--text_font);
     display: flex;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 1vh;
+    transition: color 0.15s, background 0.15s;
+    padding: 0.75vh;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+}
+
+.task_list_close:hover {
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.02);
 }

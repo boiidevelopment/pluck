@@ -8,17 +8,13 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-import { resolve_image_path } from "./../utils.js";
+import { resolve_image_path } from "../utils.js";
 
-/**
- * @class Slots
- * @description Renders a grid or grouped collection of item slots with optional drag-and-drop, grouping, and tooltips.
- */
 export class Slots {
     /**
      * @param {Object} config
@@ -48,7 +44,6 @@ export class Slots {
         this.container_selector = null;
     }
 
-    /** @returns {string} HTML for slots container */
     get_html() {
         if (this.groups && Array.isArray(this.groups)) {
             return this.get_grouped_html();
@@ -69,7 +64,6 @@ export class Slots {
         return `<div class="slots_container ${this.scroll_x} ${this.scroll_y}" ${style}>${content}</div>`.trim();
     }
 
-    /** @returns {string} HTML for grouped slots layout */
     get_grouped_html() {
         const groups_html = this.groups.map((group, group_index) => {
             const group_id = group.id || `group_${group_index}`;
@@ -142,15 +136,6 @@ export class Slots {
         return `<div class="slot_groups_wrapper">${groups_html}</div>`;
     }
 
-    /**
-     * @param {Object|null} item
-     * @param {number} index
-     * @param {string} group_id
-     * @param {number|null} slot_number
-     * @param {string|null} slot_id
-     * @param {string|null} size
-     * @returns {string} HTML for individual slot
-     */
     create_slot(item, index, group_id, slot_number = null, slot_id = null, size = null) {
         const slot_num = item ? item.slot_num : String(index + 1);
         const hotkey_display = item?.hotkey || slot_number;
@@ -196,12 +181,6 @@ export class Slots {
         `.trim();
     }
 
-    /**
-     * @param {Array<Object>} slot_definitions
-     * @param {string} group_id
-     * @param {Object} group_items
-     * @returns {string} HTML for positioned slots
-     */
     create_positioned_slots(slot_definitions, group_id, group_items) {
         return slot_definitions.map((slot_def, index) => {
             const slot_id = slot_def.id || `slot_${index}`;
@@ -232,9 +211,6 @@ export class Slots {
         }).join("");
     }
 
-    /**
-     * @param {string} selector
-     */
     render_to(selector) {
         const $target = $(selector);
         if ($target.length === 0) return;
@@ -249,9 +225,6 @@ export class Slots {
         window.ui_instance?.tooltip?.bind_tooltips();
     }
 
-    /**
-     * @param {string} container
-     */
     init_collapse_handlers(container) {
         $(container).off('click.slot_group_collapse').on('click.slot_group_collapse', '.slot_group_title.collapsible', (e) => {
             const $title = $(e.currentTarget);
@@ -269,9 +242,6 @@ export class Slots {
         });
     }
 
-    /**
-     * @param {string} container
-     */
     init_drag_and_drop(container) {
         if (!this.draggable) return;
         
@@ -386,9 +356,6 @@ export class Slots {
         });
     }
 
-    /**
-     * @param {Object} new_page_items
-     */
     update_items(new_page_items) {
         this.page_items = new_page_items || {};
         if (!this.container_selector) return;

@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -22,7 +22,7 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 body {
-    //background-image: url("/../ui/assets/bgtestgta.jpg");
+    //background-image: url("/libs/pluck/ui/assets/bgtestgta.jpg");
     //background: grey;
 }
 

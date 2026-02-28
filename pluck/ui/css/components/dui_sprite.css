@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -29,36 +29,13 @@ GitHub: https://github.com/playingintraffic/pluck
     height: fit-content;
     min-width: fit-content;
     max-width: 20vw;
-    background: var(--gradient_fade_center);
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-top: 0.2vh solid var(--accent);
     color: var(--text_primary);
-    border-radius: var(--border_radius_outer);
-    font-size: 1rem;
+    font-size: 0.75rem;
     pointer-events: none;
     font-family: var(--text_font);
-    font-style: normal;
-    padding: 1vh 4vh;
-}
-
-.interact_ui::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-}
-
-.interact_ui::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
 }
 
 .interact_header {
@@ -67,36 +44,35 @@ GitHub: https://github.com/playingintraffic/pluck
     gap: 1vh;
     width: 100%;
     text-transform: uppercase;
-    position: relative;
-    padding-left: 0.2vh;
-    padding-top: 1vh;
-    padding-bottom: 1.3vh;
+    padding: 0.75vh 1.25vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .header_text {
-    padding-right: 2vw;
-    font-size: 1.2rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08rem;
+    color: var(--text_primary);
 }
 
 .interact_header i {
-    font-size: 1rem;
+    font-size: 0.75rem;
+    color: var(--accent);
 }
 
 .dui_image {
-    width: 40px;
-    height: 40px;
+    width: 3vh;
+    height: 3vh;
     object-fit: contain;
 }
 
 .keys_container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.5vh;
+    gap: 0;
     align-items: flex-start;
-    position: relative;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1.5vh;
-    padding-bottom: 1vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    padding: 0.5vh;
 }
 
 .dui_keys {
@@ -106,6 +82,12 @@ GitHub: https://github.com/playingintraffic/pluck
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0.4vh 0.5vh;
+    gap: 0.75vh;
+    font-size: 0.68rem;
+    color: var(--text_secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04rem;
 }
 
 .dui_keys.full_row {
@@ -113,53 +95,26 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .dui_key {
-    background: var(--background_main);
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_outer);
-    padding: 0.2vh 0.8vh;
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
+    padding: 0.2vh 0.7vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text_primary);
-    opacity: 0.9;
-    margin: 0.35vh 0;
-    margin-right: 1vh;
+    color: var(--accent);
     white-space: nowrap;
-    font-size: 1rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    flex-shrink: 0;
 }
 
 .progress_containers {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1vh;
-    position: relative;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1.75vh;
-    padding-bottom: 1.75vh;
-}
-
-.progress_item h3 {
-    margin-bottom: 0.5vh;
-    font-size: inherit;
-    position: relative;
-    display: flex;
-    font-weight: normal;
-    padding-left: 0.8vh;
-    padding-bottom: 0.1vh;
-    font-size: 1rem;
-    border-bottom: var(--border_dashed);
-}
-
-.progress_item h3::before {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    content: "";
-    width: 0.3vh;
-    height: 100%;
-    background: var(--accent);
-    opacity: 0.8;
+    padding: 1vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
 }
 
 .progress_item {
@@ -170,6 +125,30 @@ GitHub: https://github.com/playingintraffic/pluck
     grid-column: span 2;
 }
 
+.progress_item h3 {
+    font-size: 0.68rem;
+    font-weight: normal;
+    position: relative;
+    display: flex;
+    padding-left: 0.75vh;
+    padding-bottom: 0.25vh;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    color: var(--text_secondary);
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 0.5vh;
+}
+
+.progress_item h3::before {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    content: "";
+    width: 0.2vh;
+    height: 100%;
+    background: var(--accent);
+}
+
 .interact_progress_header {
     position: absolute;
     display: flex;
@@ -177,44 +156,46 @@ GitHub: https://github.com/playingintraffic/pluck
     height: 100%;
     align-items: center;
     justify-content: flex-end;
-    font-size: 0.9rem;
+    font-size: 0.5rem;
+    color: var(--text_secondary);
+    letter-spacing: 0.03rem;
 }
 
 .interact_progress_bar {
     width: 100%;
-    height: 2vh;
+    height: 1vh;
     background: var(--background_overlay);
-    border-radius: var(--border_radius_inner);
-    box-shadow: var(--inset_shadow_small);
     position: relative;
     overflow: hidden;
-    margin-top: 1vh;
+    margin-top: 0.5vh;
 }
 
 .interact_progress_bar_fill {
     height: 100%;
-    border-radius: var(--border_radius_inner);
-    box-shadow: var(--inset_shadow_large);
     background: var(--accent);
     transition: width 0.3s ease;
 }
 
 .values_list {
     list-style: none;
-    color: var(--text_colour);
+    color: var(--text_secondary);
     position: relative;
     display: flex;
     flex-direction: column;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1.5vh;
-    padding-bottom: 1.5vh;
+    padding: 0.5vh;
 }
 
 .values_list li {
     display: flex;
     align-items: center;
-    gap: 0.3vh;
-    padding: 0.25vh 0;
-    margin-top: 0.2vh;
-    line-height: 1;
+    gap: 0.5vh;
+    padding: 0.4vh 0.5vh;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04rem;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+}
+
+.values_list li:last-child {
+    border-bottom: none;
 }

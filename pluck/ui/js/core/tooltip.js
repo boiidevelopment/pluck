@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -42,20 +42,24 @@ export class Tooltip {
     set_content({ on_hover = {}, suppress_actions = false }) {
         const { title = "Details", description = [], values = [], actions = [], rarity = "common" } = on_hover;
 
-        if (rarity.toLowerCase() !== "common") {
-            const rarity_color = `var(--rarity_${rarity.toLowerCase()})`;
-            this.$el.css('--tooltip_rarity_colour', rarity_color);
-        } else {
-            this.$el.css('--tooltip_rarity_colour', 'var(--accent)');
-        }
+        const rarity_color = rarity.toLowerCase() !== "common" ? `var(--rarity_${rarity.toLowerCase()})` : "var(--accent)";
+        this.$el.css("--tooltip_rarity_colour", rarity_color);
 
-        const desc_html = description.length ? `<div class="tooltip_subtitle">Description</div><div class="tooltip_description">${description.map(d => `<p>${d}</p>`).join('')}</div>` : "";
-        const val_html = values.length ? `<div class="tooltip_subtitle">Details</div><div class="tooltip_values"><ul>${values.map(v => `<li>${v.key}: <span>${v.value}</span></li>`).join('')}</ul></div>` : "";
+        const desc_html = description.length
+            ? `<div class="tooltip_subtitle">Description</div><div class="tooltip_description">${description.map(d => `<p>${d}</p>`).join("")}</div>`
+            : "";
+
+        const val_html = values.length
+            ? `<div class="tooltip_subtitle">Details</div><div class="tooltip_values"><ul>${values.map(v => `<li>${v.key}: <span style="color:${rarity_color}">${v.value}</span></li>`).join("")}</ul></div>`
+            : "";
+
         const acts_html = actions.length && !suppress_actions
             ? `<div class="tooltip_subtitle">Actions</div><div class="tooltip_actions">${actions.map(a =>
                 `<div class="tooltip_key_hint" data-action-id="${a.id}">
                     <span class="tooltip_key">${a.key}</span> ${a.label}
-                </div>`).join('')}</div>` : "";
+                </div>`).join("")}</div>`
+            : "";
+
         const header_html = `<div class="tooltip_title">${title}<div class="tooltip_rarity">${rarity}</div></div>`;
 
         this.$el.html(`${header_html}${desc_html}${val_html}${acts_html}`);
@@ -95,7 +99,7 @@ export class Tooltip {
      * Binds tooltips to `.body_card[data-tooltip] & .body_slot[data-tooltip]` elements.
      */
     bind_tooltips() {
-        $(".body_card[data-tooltip], .body_slot[data-tooltip]").each((_, el) => {
+        $(".body_card[data-tooltip], .body_slot[data-tooltip], .grid_item[data-tooltip]").each((_, el) => {
             let data = $(el).data("tooltip");
 
             if (typeof data === "string") {

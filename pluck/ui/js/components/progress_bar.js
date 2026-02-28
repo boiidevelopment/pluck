@@ -8,25 +8,13 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
 export class ProgressBar {
-    /**
-     * Stores the currently active progress bar instance.
-     * @type {?ProgressBar}
-     */
     static current = null;
-
-    /**
-     * Creates a new progress bar, destroying any existing instance.
-     * @param {Object} data - Progress bar configuration.
-     * @param {string} data.header - The header text.
-     * @param {string} data.icon - Icon class for the header.
-     * @param {number} data.duration - Duration of the progress in ms.
-     */
     constructor(data) {
         if (ProgressBar.current) {
             ProgressBar.current.destroy();
@@ -40,9 +28,6 @@ export class ProgressBar {
         this.create_progress();
     }
 
-    /**
-     * Initializes the container and builds the progress bar UI.
-     */
     create_progress() {
         if ($('.progress_container').length === 0) {
             $('<div>').addClass('progress_container').appendTo('#ui_focus');
@@ -50,9 +35,6 @@ export class ProgressBar {
         this.create();
     }
 
-    /**
-     * Builds and renders the progress bar segments and header.
-     */
     create() {
         this.progress_end(false);
 
@@ -78,11 +60,6 @@ export class ProgressBar {
         this.animate_progressbar(this.duration, segments);
     }
 
-    /**
-     * Animates the progress bar segments over time.
-     * @param {number} duration - Total animation duration in ms.
-     * @param {number} segment_count - Number of segments to animate.
-     */
     animate_progressbar(duration, segment_count = 30) {
         if (this._interval_id) clearInterval(this._interval_id);
 
@@ -102,9 +79,6 @@ export class ProgressBar {
         }, interval);
     }
 
-    /**
-     * Ends the progress bar.
-     */
     progress_end() {
         if (this._interval_id) {
             clearInterval(this._interval_id);
@@ -114,18 +88,12 @@ export class ProgressBar {
         this.hide_progress();
     }
 
-    /**
-     * Hides and clears the progress bar from the DOM.
-     */
     hide_progress() {
         $('.progress_container').stop(true, true).fadeOut(300, function () {
             $(this).empty();
         });
     }
 
-    /**
-     * Destroys this instance, cancels animation, and clears UI.
-     */
     destroy() {
         this.progress_end(false);
         if (ProgressBar.current === this) {

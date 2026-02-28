@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -16,19 +16,7 @@ GitHub: https://github.com/playingintraffic/pluck
 import { Buttons } from "../components/buttons.js"
 import { send_nui_callback } from "./../utils.js";
 
-/**
- * @class InputGroups
- * @description Renders grouped input fields with optional increment/decrement controls and expand/collapse.
- */
 export class InputGroups {
-    /**
-     * @param {Object} config
-     * @param {string} [config.id=""]
-     * @param {string} [config.title="Input Groups"]
-     * @param {Array} [config.groups=[]]
-     * @param {Array} [config.buttons=[]]
-     * @param {Object} [config.layout={}]
-     */
     constructor({ id = "", title = "Input Groups", groups = [], buttons = [], layout = {} }) {
         this.id = id;
         this.title = title;
@@ -41,7 +29,6 @@ export class InputGroups {
         this.columns = layout.columns || 0;
     }
 
-    /** @returns {string} Full rendered HTML */
     get_html() {
         const style = this.columns > 0 ? `style="grid-template-columns: repeat(${this.columns}, 1fr);"` : "";
         const wrapper = `input_groups_container ${this.scroll_x} ${this.scroll_y}`.trim();
@@ -53,12 +40,6 @@ export class InputGroups {
         return `<div class="${wrapper}" ${style}>${groups_html}</div>${buttons_html}`.trim();
     }
 
-    /**
-     * Creates a group of inputs.
-     * @param {Object} group
-     * @param {number} index
-     * @returns {string}
-     */
     create_group(group, index) {
         const expand = group.expandable ? `<button class="expand_button" data-group-index="${index}"><i class="fa-solid fa-plus"></i></button>` : "";
         const inputs = Array.isArray(group.inputs) ? group.inputs.map(i => this.create_input(i)).join("") : "";
@@ -68,11 +49,6 @@ export class InputGroups {
         </div>`;
     }
 
-    /**
-     * Creates a single input.
-     * @param {Object} input
-     * @returns {string}
-     */
     create_input(input) {
         let copy_html = "";
         if (input.copyable) {
@@ -120,7 +96,6 @@ export class InputGroups {
         return `<p>Unsupported input type: ${input.type}</p>`;
     }
 
-    /** Binds expand/collapse, number field typing, and increment/decrement logic */
     bind_events() {
         $(document).off("click", ".expand_button").on("click", ".expand_button", e => {
             const i = $(e.currentTarget).data("group-index");

@@ -8,159 +8,188 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/* Container */
 .input_groups_container {
     margin-top: 1vh;
     display: grid;
     grid-auto-rows: min-content;
-    gap: 2vh;
+    gap: 1vh;
     width: 100%;
     height: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
-    padding-right: 1.5vh;
     align-content: start;
     pointer-events: auto;
+    padding: 0.25vh;
 }
+
 .input_groups_container.row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 2vh;
+    gap: 0;
     justify-content: flex-start;
     align-items: flex-start;
 }
+
 .input_groups_container.column {
     display: flex;
     flex-direction: column;
-    gap: 2vh;
+    gap: 0;
     align-items: stretch;
 }
 
-/* Groups */
 .input_group {
     display: flex;
     flex-direction: column;
-    background: var(--background_main);
-    border-radius: var(--border_radius_outer);
-    box-shadow: var(--shadow_soft);
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-bottom: none;
     box-sizing: border-box;
     text-transform: uppercase;
     overflow: hidden;
     z-index: 11;
-    padding: 1vh;
+    padding: 0;
     height: fit-content;
     align-self: start;
 }
 
-/* Title */
+.input_group:last-child {
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+}
+
 .input_group h4 {
-    font-family: var(--header_font);
-    font-size: 1.2rem;
-    color: var(--text_primary);
+    font-family: var(--text_font);
+    font-size: 0.7rem;
+    color: var(--accent);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0.75vh 1vh;
+    letter-spacing: 0.1rem;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
 }
 
-/* Inputs */
 .group_inputs.hidden {
     display: none;
 }
+
 .input_pair {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 1vh;
-    margin: 1.5vh 0;
+    gap: 0.75vh;
+    padding: 1vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
     width: 100%;
 }
+
+.input_pair:last-child {
+    border-bottom: none;
+}
+
 .input_pair label {
     flex: 1;
     font-family: var(--text_font);
     color: var(--text_secondary);
-    font-size: 0.8rem;
+    font-size: 0.68rem;
     position: relative;
     display: flex;
     justify-content: space-between;
-    padding-left: 1vh;
-    border-bottom: var(--border_dashed);
+    padding-left: 0.75vh;
+    letter-spacing: 0.05rem;
 }
+
 .input_pair label::before {
     position: absolute;
     bottom: 0;
     left: 0;
     content: "";
-    width: 0.3vh;
+    width: 0.2vh;
     height: 100%;
     background: var(--accent);
 }
+
 .input_controls {
     display: flex;
     align-items: center;
-    gap: 1vh;
+    gap: 0.5vh;
 }
+
 .group_input {
     flex: 1;
-    height: 2.5vh;
-    font-size: 1.2vh;
-    border-radius: var(--border_radius_inner);
-    background: var(--background_overlay);
-    color: var(--text_colour);
-    border: var(--border_dark);
+    height: 2.8vh;
+    font-size: 0.72rem;
+    background: var(--background_main);
+    color: var(--text_primary);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
     text-align: center;
     padding: 0 0.5vh;
     font-family: var(--text_font);
+    outline: none;
+    transition: border-color 0.15s;
 }
+
+.group_input:hover,
+.group_input:focus {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
 .group_input[type="text"] {
     width: 100%;
-    height: 2.5vh;
     text-align: left;
-    padding: 0.5vh;
+    padding: 0.6vh 0.75vh;
 }
+
 .input_group_inline .btn {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     min-width: 4vw;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--accent);
-    color: var(--text_colour);
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_inner);
-}
-.input_group_inline .btn:hover {
-    opacity: 0.9;
+    color: #000;
+    border: none;
+    letter-spacing: 0.05rem;
 }
 
-/* Buttons */
+.input_group_inline .btn:hover {
+    background: var(--accent2);
+}
+
 .expand_button {
     background: transparent;
     border: none;
     cursor: pointer;
-    color: var(--text_primary);
-    font-size: 1rem;
-    padding: 0.2vh;
-    transition: transform 0.2s ease;
+    color: var(--text_secondary);
+    font-size: 0.7rem;
+    padding: 0;
+    transition: color 0.15s;
 }
+
 .expand_button:hover {
-    transform: scale(1.1);
+    color: var(--accent);
 }
+
 .button_group.input_groups {
     justify-content: flex-end;
+    padding: 1vh;
+    border-top: 0.1vh solid rgba(255, 255, 255, 0.06);
 }
 
 .input_copy_button {
     background: none;
     color: var(--text_secondary);
     border: none;
-    cursor: pointer
+    cursor: pointer;
+    font-size: 0.65rem;
+    padding: 0 0.25vh;
+    transition: color 0.15s;
 }
 
 .input_copy_button:hover {
@@ -169,33 +198,37 @@ GitHub: https://github.com/playingintraffic/pluck
 
 .custom_select {
     position: relative;
-    background: var(--background_overlay);
-    border-radius: var(--border_radius_inner);
-    box-shadow: var(--inset_shadow_large);
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
     cursor: pointer;
-    padding: 0 0.5vh;
-    height: 2.5vh;
+    padding: 0 0.75vh;
+    height: 2.8vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: border-color 0.15s;
+}
+
+.custom_select:hover {
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .custom_select_display {
     flex: 1;
-    font-size: 1.2vh;
-    color: var(--text_colour);
+    font-size: 0.72rem;
+    color: var(--text_primary);
+    font-family: var(--text_font);
 }
 
 .custom_select_dropdown {
     width: 100%;
     max-height: 12vh;
     overflow-y: auto;
-    background: var(--background_overlay);
-    border: var(--border_dark);
-    border-radius: var(--border_radius_inner);
-    box-shadow: var(--inset_shadow_small);
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-top: 0.2vh solid var(--accent);
     z-index: 3;
-    margin-top: 0.2vh;
+    scrollbar-width: none;
 }
 
 .custom_select_dropdown.hidden {
@@ -203,11 +236,15 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .custom_select_option {
-    padding: 0.5vh;
-    font-size: 1.2vh;
-    color: var(--text_colour);
+    padding: 0.6vh 0.75vh;
+    font-size: 0.7rem;
+    color: var(--text_secondary);
     cursor: pointer;
-    border-bottom: var(--border_dashed);
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    transition: background 0.15s, color 0.15s;
+    font-family: var(--text_font);
 }
 
 .custom_select_option:last-child {
@@ -215,10 +252,10 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .custom_select_option:hover {
+    background: var(--background_hover);
     color: var(--accent);
 }
 
-/* Scroll */
 .input_groups_container.scroll_y_none { overflow-y: hidden !important; }
 .input_groups_container.scroll_y_auto { overflow-y: auto !important; }
 .input_groups_container.scroll_y_on   { overflow-y: scroll !important; }

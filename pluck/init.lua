@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 ]]
@@ -28,8 +28,11 @@ pluck.debug_colours = {
 }
 pluck.is_server = IsDuplicityVersion()
 pluck.resource_name = GetCurrentResourceName()
-pluck.embedded_path = nil
-pluck.registered_functions = {}
+pluck.embedded_path = false
+pluck.registered_functions = {
+    client = {},
+    server = {}
+}
 
 --- @section Utility Functions
 
@@ -37,7 +40,8 @@ pluck.registered_functions = {}
 --- @param label string: The unique key to associate with the function.
 --- @param func function: The function to register.
 function pluck.register_function(label, func)
-    pluck.registered_functions[label] = func
+    local context = pluck.is_server and "server" or "client"
+    pluck.registered_functions[context][label] = func
 end
 
 --- Calls a registered function by its label.
@@ -45,11 +49,10 @@ end
 --- @return The result of the function, or false if not found.
 function pluck.call_registered_function(label, data)
     if not label then pluck.log("error", "function label is required") return false end
-
-    local func = pluck.registered_functions[label]
+    local funcs = pluck.is_server and pluck.registered_functions.server or pluck.registered_functions.client
+    local func = funcs[label]
     if not func then pluck.log("error", ("function with label %s not found"):format(label)) return false end
-
-    return pluck.registered_functions[label](data)
+    return func(data)
 end
 
 --- Recursively sanitizes a UI config by replacing functions with labels and storing them
@@ -63,7 +66,7 @@ function pluck.sanitize_ui(data, path)
     for k, v in pairs(data) do
         local p = ("%s_%s"):format(path, tostring(k)):gsub("[^%w_]", "")
 
-        if (k == "on_action" or k == "on_increment" or k == "on_decrement") then
+        if (k == "on_action" or k == "on_increment" or k == "on_decrement" or k == "on_select") then
             pluck.register_function(p, v)
             out.action = p
         elseif type(v) == "table" then
@@ -153,6 +156,15 @@ if pluck.is_server then
     pluck.close_ui = close_ui
     exports("close_ui", close_ui)
 
+    --- Handles server side functions when UI elements are built from server.
+    RegisterNetEvent("pluck:sv:handler", function(data)
+        local source = source
+        local success, result = pcall(pluck.call_registered_function, data.action, data)
+        if not success then
+            pluck.log("error", ("sv:handler: Function call failed - %s"):format(result))
+        end
+    end)
+
 else
 
     --- Sends a full UI to the NUI layer and sets focus.
@@ -168,6 +180,8 @@ else
             pluck.log("error", "build_ui: UI config wasn't returned after sanitize.") 
             return 
         end
+
+        print("ui data: ", json.encode(safe_ui, {indent = true}))
         
         pluck.log("info", "build_ui: Building UI and setting NUI focus.")
         SetNuiFocus(true, true)
@@ -223,6 +237,49 @@ else
     pluck.set_slot_move_handler = set_slot_move_handler
     exports("set_slot_move_handler", set_slot_move_handler)
 
+    pluck.grid_move_handler = nil
+
+    --- Allows setting a custom hook to handle grid movement logic.
+    --- This runs on the client and is NOT a security boundary.
+    --- A malicious client could override this and fire any server event they want. 
+    --- But before screaming at me... they could already do that without this hook existing.
+    --- If this lets someone exploit your server, your server event was already broken.
+    --- Always validate and enforce grid states server-side.
+    local function set_grid_move_handler(func)
+        pluck.grid_move_handler = func
+    end
+
+    pluck.set_grid_move_handler = set_grid_move_handler
+    exports("set_grid_move_handler", set_grid_move_handler)
+
+    --- Returns NUI-compatible headshot image URL for the local player
+    --- @return string: Headshot image path or placeholder if headshot unavailable
+    local function get_player_headshot()
+        local ped = PlayerPedId()
+        local headshot = RegisterPedheadshotTransparent(ped)
+        if not (headshot and IsPedheadshotValid(headshot)) then
+            return nil
+        end
+
+        local timeout, txd = 1000, nil
+        while not IsPedheadshotReady(headshot) and timeout > 0 do
+            Wait(10)
+            timeout = timeout - 10
+        end
+
+        if IsPedheadshotReady(headshot) then
+            txd = GetPedheadshotTxdString(headshot)
+            SetTimeout(2000, function() UnregisterPedheadshot(headshot) end)
+        else
+            UnregisterPedheadshot(headshot)
+        end
+
+        return txd and ("https://nui-img/%s/%s?v=%d"):format(txd, txd, GetGameTimer())
+    end
+
+    pluck.get_player_headshot = get_player_headshot
+    exports("get_player_headshot", get_player_headshot)
+
     --- @section Events
 
     --- Receives and builds a UI triggered by the server.
@@ -251,7 +308,6 @@ else
     RegisterNUICallback("nui:handler", function(data, cb)
         pluck.log("debug", ("nui:handler invoked with: %s"):format(json.encode(data)))
         if not data or not data.action then
-            pluck.log("error", "NUI handler: Missing action field.")
             if cb then cb(false) end
             return
         end
@@ -259,18 +315,27 @@ else
         if data.action == "slots_moved_item" then
             if pluck.slot_move_handler then
                 pluck.slot_move_handler(data.dataset)
-            else
-                pluck.log("warn", "No slot move handler registered.")
             end
-
             if cb then cb({ success = true }) end
             return
         end
-        
-        local success, result = pcall(pluck.call_registered_function, data.action, data)
 
-        if not success then
-            pluck.log("error", ("NUI handler: Function call failed - %s"):format(result))
+        if data.action == "grid_moved_item" then
+            if pluck.grid_move_handler then
+                pluck.grid_move_handler(data.dataset)
+            end
+            if cb then cb({ success = true }) end
+            return
+        end
+
+        local func = pluck.registered_functions.client[data.action]
+        if func then
+            local success, result = pcall(func, data)
+            if not success then
+                pluck.log("error", ("NUI handler: Function call failed - %s"):format(result))
+            end
+        else
+            TriggerServerEvent("pluck:sv:handler", data)
         end
 
         if data.should_close then

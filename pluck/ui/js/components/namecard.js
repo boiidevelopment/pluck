@@ -8,27 +8,14 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
 import { resolve_image_path } from "./../utils.js";
 
-/**
- * @class Namecard
- * @description Renders a player profile card with avatar, name, title, level, and tier.
- */
 export class Namecard {
-    /**
-     * @param {Object} config
-     * @param {string} config.avatar
-     * @param {string} [config.background="avatar_placeholder.png"]
-     * @param {string} [config.name="Player Name"]
-     * @param {string} [config.title="Player Title"]
-     * @param {string|number} [config.level="99"]
-     * @param {string} [config.tier="bronze"]
-     */
     constructor({ avatar, background = "avatar_placeholder.png", name = "Player Name", title = "Player Title", level = "99", tier = "bronze" }) {
         this.avatar = avatar;
         this.background = background;
@@ -38,7 +25,6 @@ export class Namecard {
         this.tier = tier;
     }
 
-    /** @returns {string} Full HTML for the namecard */
     get_html() {
         const frame_class = this.frame ? `namecard_frame_${this.frame}` : "";
 

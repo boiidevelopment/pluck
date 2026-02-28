@@ -8,27 +8,12 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/**
- * @class DUISprite
- * @description Renders a compact 3D world-space UI element (DUI) with optional icon or image,
- * header, key hints, values, and progressbars. Used by DUI zones to display world interaction info.
- */
 export class DUISprite {
-    /**
-     * @param {Object} options
-     * @param {string} [options.header="Header Missing"] Header text displayed at top.
-     * @param {string|null} [options.icon=null] Font Awesome icon class (if provided).
-     * @param {string|null} [options.image=null] Image URL or NUI path (shown if icon not used).
-     * @param {Array<Object>} [options.keys=[]] Key hint list (e.g. [{ key: "E", label: "Interact" }]).
-     * @param {Object} [options.additional={}] Extra data including progressbars or values.
-     * @param {Object} [options.additional.progressbars] Progressbars to show (e.g. { health: { label, value } }).
-     * @param {Object} [options.additional.values] Informational values (e.g. { rank: { label, value } }).
-     */
     constructor(options) {
         this.keys = options.keys || [];
         this.icon = options.icon || null;
@@ -40,7 +25,6 @@ export class DUISprite {
         this.build();
     }
 
-    /** Builds and injects the HTML structure into the DUI container. */
     build() {
         const key_count = this.keys.length;
         const key_hints = this.keys.map((key_obj, idx) => {
@@ -102,7 +86,6 @@ export class DUISprite {
         $("#dui_container").html(content);
     }
 
-    /** Clears the DUI container. */
     close() {
         $("#dui_container").empty();
     }
@@ -111,7 +94,7 @@ export class DUISprite {
 /*
 const test_dui = new DUISprite({
     header: "Some Test Dui",
-    image: "/pluck/ui/assets/logos/pit_100.png",
+    image: "/libs/pluck/ui/assets/logos/logo.png",
     keys: [
         { key: "E", label: "Interact" },
         { key: "F", label: "Alternate" }
@@ -127,6 +110,4 @@ const test_dui = new DUISprite({
         }
     }
 });
-
-$("body").css({ "background": "grey" });
 */

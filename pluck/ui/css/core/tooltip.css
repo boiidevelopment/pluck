@@ -8,100 +8,79 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/* Tooltip */
 #tooltip {
     position: absolute;
     display: none;
     z-index: 9999;
-    max-width: 15vw;
+    width: fit-content;
     min-width: 12.5vw;
     background: var(--background_main);
-    border-radius: var(--border_radius_outer);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-top: 0.2vh solid var(--tooltip_rarity_colour);
     color: var(--text_primary);
-    font-size: 1rem;
-    box-shadow: var(--shadow_soft);
+    font-size: 0.8rem;
     pointer-events: none;
     font-family: var(--text_font);
     overflow: hidden;
-    padding: 1vh 0.5vh;
     --tooltip_rarity_colour: var(--accent);
 }
 
-#tooltip::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--tooltip_rarity_colour), transparent);
-    opacity: 0.7;
-}
-
-#tooltip::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--tooltip_rarity_colour), transparent);
-    opacity: 0.7;
-}
-
-/* Title */
 .tooltip_title {
     position: relative;
-    padding: 1vh;
+    padding: 0.8vh 1vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
     text-transform: uppercase;
+    letter-spacing: 0.05rem;
     font-weight: bold;
     color: var(--text_primary);
     font-family: var(--header_font);
-    border-bottom: var(--border_light);
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 0.85rem;
+    gap: 2vh;
 }
 
-/* Rarity Badge */
 .tooltip_rarity {
-    position: absolute;
-    right: 1vh;
-    top: 1vh;
     text-transform: uppercase;
-    background: var(--background_main);
-    color: var(--text_primary);
-    border: var(--border_dashed);
-    padding: 0.5vh 0.75vh;
-    font-size: 1vh;
+    background: var(--background_panel);
+    color: var(--tooltip_rarity_colour);
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
+    padding: 0.3vh 0.6vh;
+    font-size: 0.6rem;
     font-family: var(--text_font);
     white-space: nowrap;
+    letter-spacing: 0.08rem;
+    flex-shrink: 0;
 }
 
-/* Body */
 .tooltip_body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 1vh;
+    padding: 0.5vh;
     overflow-wrap: break-word;
 }
 
-/* Subtitles */
 .tooltip_subtitle {
     position: relative;
     display: flex;
-    margin: 1vh;
-    border-bottom: var(--border_dashed);
+    margin: 0.5vh 1vh;
     padding-left: 1vh;
+    padding-bottom: 0.5vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    color: var(--text_secondary);
 }
 
 .tooltip_subtitle::before {
@@ -109,38 +88,36 @@ GitHub: https://github.com/playingintraffic/pluck
     bottom: 0;
     left: 0;
     content: "";
-    width: 0.3vh;
+    width: 0.2vh;
     height: 100%;
     background: var(--tooltip_rarity_colour);
 }
 
-/* Description */
 .tooltip_description {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin: 1vh;
+    padding: 0.5vh 1vh;
     text-align: left;
     word-break: break-word;
-    line-height: 1;
+    line-height: 1.5;
 }
 
 .tooltip_description p {
     margin: 0;
-    color: var(--text_primary);
+    color: var(--text_secondary);
     overflow-wrap: break-word;
+    font-size: 0.75rem;
 }
 
-/* Values */
 .tooltip_values {
-    margin: 1vh;
+    padding: 0.5vh 1vh;
 }
 
 .tooltip_values ul {
     padding: 0;
     margin: 0;
     list-style: none;
-    text-transform: capitalize;
 }
 
 .tooltip_values ul li {
@@ -149,36 +126,53 @@ GitHub: https://github.com/playingintraffic/pluck
     gap: 1vh;
     word-break: break-word;
     text-transform: capitalize;
+    font-size: 0.72rem;
+    color: var(--text_secondary);
+    padding: 0.3vh 0;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
 }
 
-/* Actions */
+.tooltip_values ul li:last-child {
+    border-bottom: none;
+}
+
+.tooltip_values ul li span:last-child {
+    color: var(--accent);
+}
+
 .tooltip_actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1vh;
+    gap: 0.5vh;
     width: 100%;
-    margin: 1vh;
+    padding: 0.5vh 1vh;
+    border-top: 0.1vh solid rgba(255, 255, 255, 0.06);
 }
 
-/* Keys */
 .tooltip_key_hint {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    gap: 0.5vh;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 0.68rem;
+    color: var(--text_secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
 }
 
 .tooltip_key {
-    border: var(--border_dashed);
-    background: var(--background_main);
-    border-radius: var(--border_radius_outer);
-    padding: 0.3vh 1vh;
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
+    background: var(--background_panel);
+    padding: 0.2vh 0.8vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text_primary);
-    margin-right: 1vh;
+    color: var(--accent);
     white-space: nowrap;
+    font-size: 0.65rem;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
 }

@@ -1,0 +1,274 @@
+/*
+--------------------------------------------------
+
+This file is part of PLUCK.
+You are free to use these files within your own resources.
+Please retain the original credit and attached MIT license.
+Support honest development.
+
+Author: Case @ BOII Development
+License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
+GitHub: https://github.com/boiidevelopment/pluck
+
+--------------------------------------------------
+*/
+
+.grid_groups_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+}
+
+.grid_group {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+    padding: 0.5vh 0;
+    
+}
+
+.grid_group:last-child {
+    border-bottom: none;
+}
+
+.grid_group_title {
+    background: var(--background_overlay);
+    border: none;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    user-select: none;
+    height: 3.5vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1vh;
+    position: relative;
+}
+
+.grid_group_title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.2vh;
+    background: var(--accent);
+}
+
+.grid_group_title_inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.grid_group_title_label {
+    display: flex;
+    align-items: center;
+    gap: 0.6vh;
+    font-size: 0.68rem;
+    letter-spacing: 0.08rem;
+    color: var(--text_secondary);
+    line-height: 1;
+}
+
+.grid_group_title_label i {
+    font-size: 0.7rem;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.grid_group_title.collapsible {
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.grid_group_title.collapsible:hover {
+    background: var(--background_hover);
+}
+
+.grid_group_title span {
+    font-size: 0.65rem;
+    color: var(--text_secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5vh;
+    line-height: 1;
+    letter-spacing: 0.03rem;
+    opacity: 0.7;
+}
+
+.grid_container {
+    position: relative;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 100vh;
+    opacity: 1;
+}
+
+.grid_container.collapsed {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.grid_cells,
+.grid_items {
+    display: grid;
+    gap: 0;
+}
+
+.grid_cells {
+    position: relative;
+    z-index: 1;
+}
+
+.grid_items {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.grid_items .grid_item {
+    pointer-events: all;
+}
+
+.grid_cell {
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.grid_cell_drop_target {
+    background: rgba(255, 255, 255, 0.05) !important;
+    outline: 0.1vh dashed var(--accent);
+    outline-offset: -2px;
+}
+
+.grid_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    cursor: grab;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.grid_item:active {
+    cursor: grabbing;
+}
+
+.grid_item:hover {
+    background: var(--background_hover);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.grid_item.grid_item_dragging {
+    opacity: 0.3;
+}
+
+.grid_item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.grid_item.rarity_common::before    { background: linear-gradient(to top, var(--rarity_common), transparent 70%); }
+.grid_item.rarity_uncommon::before  { background: linear-gradient(to top, var(--rarity_uncommon), transparent 70%); }
+.grid_item.rarity_rare::before      { background: linear-gradient(to top, var(--rarity_rare), transparent 70%); }
+.grid_item.rarity_epic::before      { background: linear-gradient(to top, var(--rarity_epic), transparent 70%); }
+.grid_item.rarity_legendary::before { background: linear-gradient(to top, var(--rarity_legendary), transparent 70%); }
+
+.grid_item.rarity_common    { border-color: var(--rarity_common); }
+.grid_item.rarity_uncommon  { border-color: var(--rarity_uncommon); }
+.grid_item.rarity_rare      { border-color: var(--rarity_rare); }
+.grid_item.rarity_epic      { border-color: var(--rarity_epic); }
+.grid_item.rarity_legendary { border-color: var(--rarity_legendary); }
+
+.grid_item_image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.grid_item_image img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.grid_item_label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 0.6rem;
+    color: var(--text_secondary);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    padding: 0.2vh 0.4vh;
+    background: var(--background_overlay);
+    pointer-events: none;
+    z-index: 3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.grid_item_footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.grid_item_quantity {
+    position: absolute;
+    top: 0.25vh;
+    right: 0.25vh;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text_primary);
+    letter-spacing: 0.03rem;
+}
+
+.grid_item_progress {
+    width: 100%;
+    height: 0.2vh;
+    background: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+.grid_item_progress_fill {
+    height: 100%;
+    transition: width 0.2s ease;
+}
+
+.grid_item.rarity_common    .grid_item_progress_fill { background: var(--rarity_common); }
+.grid_item.rarity_uncommon  .grid_item_progress_fill { background: var(--rarity_uncommon); }
+.grid_item.rarity_rare      .grid_item_progress_fill { background: var(--rarity_rare); }
+.grid_item.rarity_epic      .grid_item_progress_fill { background: var(--rarity_epic); }
+.grid_item.rarity_legendary .grid_item_progress_fill { background: var(--rarity_legendary); }
+.grid_item:not([class*="rarity_"]) .grid_item_progress_fill { background: var(--accent); }

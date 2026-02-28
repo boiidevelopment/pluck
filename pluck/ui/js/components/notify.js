@@ -8,21 +8,12 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/**
- * @class Notify
- * @description Displays floating notification toasts on screen.
- */
 export class Notify {
-    /**
-     * @param {Object} config
-     * @param {string} [config.position="top-right"] - Placement of notifications.
-     * @param {string} [config.fill_direction="down"] - Direction of stacking ("up" or "down").
-     */
     constructor({ position = "top-right", fill_direction = "down" } = {}) {
         this.position = position;
         this.fill_direction = fill_direction;
@@ -30,7 +21,6 @@ export class Notify {
         this.create_container();
     }
 
-    /** @private Creates main notification container */
     create_container() {
         if ($(`#${this.container_id}`).length) return;
         const style = this.resolve_position_style();
@@ -38,7 +28,6 @@ export class Notify {
         $("body").append(`<div id="${this.container_id}" class="notify_container" style="position:absolute;${style.position};display:flex;flex-direction:${dir};align-items:${style.align};justify-content:${style.justify};gap:1.5vh;z-index:9999;pointer-events:none;"></div>`);
     }
 
-    /** @private Handles notification positioning */
     resolve_position_style() {
         const map = {
             "top-left": { position: "top:2vh;left:2vw;", align: "flex-start", justify: "flex-start" },
@@ -57,15 +46,6 @@ export class Notify {
         return map[this.position] || map["top-right"];
     }
 
-    /**
-     * Displays a notification.
-     * @param {Object} opts
-     * @param {string} [opts.type="info"] - Notification type (info, success, error, etc.)
-     * @param {string|null} [opts.header=null] - Optional header text.
-     * @param {string} opts.message - Body message text.
-     * @param {number} [opts.duration=4000] - Auto-close duration in ms. Set to 0 for sticky.
-     * @param {string|null} [opts.icon=null] - Optional icon class.
-     */
     show({ type = "info", header = null, message = "", duration = 4000, icon = null }) {
         if (!message) return;
         const icon_html = icon ? `<i class="${icon} notify_icon"></i>` : "";

@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -19,57 +19,31 @@ GitHub: https://github.com/playingintraffic/pluck
     left: 2%;
     transform: translateY(-50%);
     display: none;
-    padding: 2vh 4vh;
-    background: var(--gradient_fade_center);
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-left: 0.2vh solid var(--accent);
     color: var(--text_primary);
     width: fit-content;
-    border-radius: var(--border_radius_outer);
-}
-
-#control_display_section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-    border-radius: var(--border_radius_outer) var(--border_radius_outer) 0 0;
-}
-
-#control_display_section::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-    border-radius: 0 0 var(--border_radius_outer) var(--border_radius_outer);
 }
 
 #control_display_section h3 {
-    position: relative;
     display: flex;
     justify-content: center;
-    color: var(--text_primary);
+    color: var(--accent);
     font-family: var(--header_font);
-    font-size: 1.5rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-}
-
-.control_display_header {
-    border-bottom: var(--border_light);
-    opacity: 0.6;
+    letter-spacing: 0.15rem;
+    padding: 0.75vh 1.5vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .control_display_grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1vh;
-    padding-top: 1.2vh;
+    gap: 0;
+    padding: 0.5vh;
 }
 
 .control_display_item {
@@ -78,36 +52,42 @@ GitHub: https://github.com/playingintraffic/pluck
     align-items: center;
     justify-content: space-between;
     cursor: default;
-    padding: 0.5vh;
-    border-radius: var(--border_radius_inner);
-    background: var(--background_panel);
+    padding: 0.5vh 0.75vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+    transition: background 0.15s;
+}
+
+.control_display_item:last-child {
+    border-bottom: none;
+}
+
+.control_display_item:hover {
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .control_key {
-    background: var(--background_main);
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_outer);
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
     padding: 0.2vh 0.8vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text_primary);
-    opacity: 0.9;
-    margin: 0.35vh 0;
+    color: var(--accent);
     white-space: nowrap;
-    font-size: 0.8rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     font-family: var(--header_font);
+    letter-spacing: 0.05rem;
 }
 
 .control_action {
     font-family: var(--text_font);
-    font-size: 0.8rem;
+    font-size: 0.68rem;
     color: var(--text_secondary);
-    font-style: italic;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: color 0.2s ease;
-    padding-right: 1vh;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    padding-right: 0.5vh;
 }

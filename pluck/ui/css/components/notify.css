@@ -8,20 +8,20 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-/* Container */
 .notify_container {
     pointer-events: none;
     z-index: 1000;
 }
 
-/* Notification */
 .notify {
-    background: var(--gradient_fade_center_darker);
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-left: 0.2vh solid var(--accent);
     color: var(--text_primary);
     min-width: 15vw;
     max-width: 30vw;
@@ -30,124 +30,79 @@ GitHub: https://github.com/playingintraffic/pluck
     display: flex;
     flex-direction: column;
     animation: slide_in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0 2vh;
     position: relative;
     overflow: hidden;
 }
 
-.notify::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.8;
-}
-
-.notify::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.8;
-}
-
-.notify.notify_has_bar::after {
-    display: none;
-}
-
-/* Header */
 .notify_header {
     font-family: var(--header_font);
-    font-size: 1.1rem;
+    font-size: 0.78rem;
     color: var(--text_primary);
     text-transform: uppercase;
+    letter-spacing: 0.08rem;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 1vh;
-    padding: 1vh;
-    padding-bottom: 0;
+    padding: 0.75vh 1vh 0.25vh;
 }
 
-/* Body */
 .notify_body {
-    font-size: 0.95rem;
-    color: var(--text_primary);
+    font-size: 0.72rem;
+    color: var(--text_secondary);
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 1vh;
-    padding: 1vh;
-    padding-top: 0.4vh;
-    line-height: 1;
+    padding: 0 1vh 0.75vh;
+    line-height: 1.4;
+    letter-spacing: 0.03rem;
 }
 
-/* Progressbar */
 .notify_bar {
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--background_main), transparent);
+    height: 0.2vh;
+    background: rgba(255, 255, 255, 0.04);
     overflow: hidden;
     position: relative;
-    margin-top: auto;
 }
 
 .notify_fill {
     width: 100%;
     height: 100%;
     transition: width linear;
-    position: relative;
 }
 
-/* Icons */
 .notify_icon {
-    font-size: 1.2rem;
-    background: var(--background_main);
-    border: var(--border_dashed);
+    font-size: 0.85rem;
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
     padding: 0.5vh;
+    flex-shrink: 0;
 }
 
-/* Type Styles - Icons */
+.notify_success { border-left-color: var(--notify_success); }
+.notify_error   { border-left-color: var(--notify_error); }
+.notify_info    { border-left-color: var(--notify_info); }
+.notify_warning { border-left-color: var(--notify_warning); }
+.notify_primary { border-left-color: var(--notify_primary); }
+
 .notify_success .notify_icon { color: var(--notify_success); }
-.notify_error .notify_icon { color: var(--notify_error); }
-.notify_info .notify_icon { color: var(--notify_info); }
+.notify_error   .notify_icon { color: var(--notify_error); }
+.notify_info    .notify_icon { color: var(--notify_info); }
 .notify_warning .notify_icon { color: var(--notify_warning); }
 .notify_primary .notify_icon { color: var(--notify_primary); }
 
-/* Type Styles - Progress Bar */
-.notify_success .notify_fill { background: linear-gradient(90deg, transparent, var(--notify_success), transparent); }
-.notify_error .notify_fill { background: linear-gradient(90deg, transparent, var(--notify_error), transparent); }
-.notify_info .notify_fill { background: linear-gradient(90deg, transparent, var(--notify_info), transparent); }
-.notify_warning .notify_fill { background: linear-gradient(90deg, transparent, var(--notify_warning), transparent); }
-.notify_primary .notify_fill { bbackground: linear-gradient(90deg, transparent, var(--notify_primary), transparent); }
+.notify_success .notify_fill { background: var(--notify_success); }
+.notify_error   .notify_fill { background: var(--notify_error); }
+.notify_info    .notify_fill { background: var(--notify_info); }
+.notify_warning .notify_fill { background: var(--notify_warning); }
+.notify_primary .notify_fill { background: var(--notify_primary); }
 
-/* Type Styles - Top Border */
-.notify_success::before { background: linear-gradient(90deg, transparent, var(--notify_success), transparent) !important; }
-.notify_error::before { background: linear-gradient(90deg, transparent, var(--notify_error), transparent) !important; }
-.notify_info::before { background: linear-gradient(90deg, transparent, var(--notify_info), transparent) !important; }
-.notify_warning::before { background: linear-gradient(90deg, transparent, var(--notify_warning), transparent) !important; }
-.notify_primary::before { background: linear-gradient(90deg, transparent, var(--notify_primary), transparent) !important; }
-
-/* Type Styles - Bottom Border (only when no progress bar) */
-.notify_success::after { background: linear-gradient(90deg, transparent, var(--notify_success), transparent) !important; }
-.notify_error::after { background: linear-gradient(90deg, transparent, var(--notify_error), transparent) !important; }
-.notify_info::after { background: linear-gradient(90deg, transparent, var(--notify_info), transparent) !important; }
-.notify_warning::after { background: linear-gradient(90deg, transparent, var(--notify_warning), transparent) !important; }
-.notify_primary::after { background: linear-gradient(90deg, transparent, var(--notify_primary), transparent) !important; }
-
-/* Animations */
 @keyframes slide_in {
-    from { 
-        opacity: 0; 
-        transform: translateX(100%); 
+    from {
+        opacity: 0;
+        transform: translateX(100%);
     }
-    to { 
-        opacity: 1; 
-        transform: translateX(0); 
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }

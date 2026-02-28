@@ -8,12 +8,12 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
 
-import { resolve_image_path } from "./../utils.js";
+import { resolve_image_path } from "../utils.js";
 
 export class SlotPopup {
     constructor(config = {}) {
@@ -32,7 +32,7 @@ export class SlotPopup {
 
     show({ item_id, image, quantity, action, rarity = "common" }) {
         const notification = document.createElement("div");
-        notification.className = `slot_popup rarity_${rarity} slot_popup_${action}`;
+        notification.className = `inventory_popup rarity_${rarity} slot_popup_${action}`;
 
         const action_symbol = action === "added" ? "+" : "-";
         const action_class = action === "added" ? "action_added" : "action_removed";

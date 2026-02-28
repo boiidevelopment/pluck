@@ -1,46 +1,42 @@
+/*
+--------------------------------------------------
+
+This file is part of PLUCK.
+You are free to use these files within your own resources.
+Please retain the original credit and attached MIT license.
+Support honest development.
+
+Author: Case @ BOII Development
+License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
+GitHub: https://github.com/boiidevelopment/pluck
+
+--------------------------------------------------
+*/
+
 #options_selector_section {
     position: fixed;
     top: 20vh;
     left: 50%;
     transform: translateX(-50%);
     display: none;
-    text-align: center;
-    padding: 2vh;
-    background: var(--gradient_fade_center);
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-top: 0.2vh solid var(--accent);
     color: var(--text_primary);
     width: 20vw;
 }
 
-#options_selector_section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-}
-
-#options_selector_section::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
-}
-
 #options_selector_section h3 {
-    position: relative;
     display: flex;
     flex-direction: column;
-    color: var(--text_primary);
+    color: var(--accent);
     font-family: var(--header_font);
-    font-size: 3.5vh;
-    margin-bottom: 1vh;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15rem;
+    padding: 0.75vh 1.25vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .options_selector_list {
@@ -48,7 +44,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.5vh;
+    gap: 0;
+    padding: 0.5vh;
 }
 
 .options_selector_item {
@@ -56,61 +53,82 @@
     align-items: center;
     justify-content: flex-start;
     cursor: pointer;
-    width: 80%;
-    color: var(--text_primary);
-    margin: 0.5vh;
+    width: 100%;
+    color: var(--text_secondary);
     font-family: var(--text_font);
-    font-size: 1.6vh;
-    padding: 1vh;
-    border-radius: var(--border_radius_inner);
-    background: var(--background_panel);
-    box-shadow: var(--shadow_soft);
-    transition: all 0.2s ease;
+    font-size: 0.72rem;
+    padding: 0.75vh 1vh;
+    background: transparent;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    transition: background 0.15s, color 0.15s;
+    position: relative;
+}
+
+.options_selector_item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.15s;
+}
+
+.options_selector_item:hover::before {
+    width: 0.2vh;
 }
 
 .options_selector_item:hover {
-    cursor: pointer;
-    background: var(--background_overlay);
+    background: var(--background_hover);
+    color: var(--text_primary);
+}
+
+.options_selector_item:last-child {
+    border-bottom: none;
 }
 
 .options_selector_item p {
-    padding: 0.5vh;
+    padding: 0;
+    margin: 0;
 }
 
 .options_selector_item.disabled {
     cursor: not-allowed;
-    opacity: 0.5;
-    filter: grayscale(100%);
-    transform: none;
-    background: var(--background_panel);
-}
-
-.options_selector_item.disabled:hover {
-    transform: none;
-    background: var(--background_panel);
-    box-shadow: none;
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .options_selector_image {
-    width: 3vw;
-    height: auto;
+    width: 2.5vh;
+    height: 2.5vh;
     object-fit: cover;
-    border-radius: var(--border_radius_inner);
-    background: var(--background_hover);
-    border: var(--border_dashed);
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
     margin-right: 1vh;
+    flex-shrink: 0;
 }
 
 .options_selector_close {
     background: none;
     border: none;
-    font-size: 1rem;
+    border-top: 0.1vh solid rgba(255, 255, 255, 0.06);
+    font-size: 0.65rem;
     color: var(--text_secondary);
-    opacity: 0.9;
     font-family: var(--text_font);
     display: flex;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 1vh;
+    transition: color 0.15s, background 0.15s;
+    padding: 0.75vh;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+}
+
+.options_selector_close:hover {
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.02);
 }

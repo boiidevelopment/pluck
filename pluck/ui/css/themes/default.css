@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -63,7 +63,7 @@ body.default {
     --gradient_focus_circle: radial-gradient(circle at center, rgba(20,20,20,0.85) 0%, rgba(20,20,20,0.6) 35%, rgba(20,20,20,0.3) 55%, rgba(20,20,20,0.1) 70%, rgba(20,20,20,0) 85%);
 
     /* Buttons */
-    --button_padding: 0.2vh 1vh;
+    --button_padding: 0.5vh 1vh;
 
     /* Scrollbars */
     --scrollbar_track: rgba(255, 255, 255, 0.25);
@@ -99,4 +99,19 @@ body.default {
     --notify_info: #3498db;
     --notify_warning: #f39c12;
     --notify_primary: #9b59b6;
+
+    /* Status HUD Colours */
+    --status_health: #b53232;
+    --status_armour: #0980f0;
+    --status_hunger: #e0a355;
+    --status_thirst: #55b8e0;
+    --status_stamina: #55e090;
+    --status_oxygen: #8055e0;
+    --status_temperature: #e07855;
+    --status_sanity: #c455e0;
+    --status_stress: #e05555;
+    --status_bleeding: #cc2222;
+    --status_radiation: #aacc22;
+    --status_infection: #55cc77;
+    --status_poison: #88cc22;
 }

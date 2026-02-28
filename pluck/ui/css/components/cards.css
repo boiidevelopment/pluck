@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -18,33 +18,57 @@ GitHub: https://github.com/playingintraffic/pluck
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
     grid-auto-rows: min-content;
-    gap: 2vh;
+    gap: 1vh;
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
-    padding-right: 1.5vh;
+    overflow-y: auto;
     align-content: start;
+    scrollbar-width: none;
+    padding: 0.25vh;
 }
 
-.cards_container.row {
-    background: transparent;
-}
-
-.cards_container.column {
-    background: transparent;
-}
+.cards_container.row { background: transparent; }
+.cards_container.column { background: transparent; }
 
 .body_card {
     display: flex;
-    background-color: var(--background_panel);
-    border-radius: var(--border_radius_outer);
-    box-shadow: var(--shadow_soft);
+    background: var(--background_panel);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    border-right: none;
+    border-bottom: none;
     box-sizing: border-box;
     text-transform: uppercase;
     overflow: hidden;
     z-index: 11;
     height: fit-content;
     align-self: start;
+    transition: background 0.15s;
+    position: relative;
+}
+
+.body_card:nth-child(n) {
+    border-right: none;
+}
+
+.body_card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.15s;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.body_card:hover::before {
+    height: 0.2vh;
+}
+
+.body_card:hover {
+    background: var(--background_hover);
 }
 
 .body_card.column {
@@ -69,8 +93,8 @@ GitHub: https://github.com/playingintraffic/pluck
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0.5vh 1vh;
-    gap: 1vh;
+    padding: 0.5vh 0;
+    gap: 0;
 }
 
 .body_card.row {
@@ -83,8 +107,8 @@ GitHub: https://github.com/playingintraffic/pluck
 }
 
 .body_card.row .body_card_image {
-    width: 64px;
-    height: 64px;
+    width: 6vh;
+    height: 6vh;
     flex-shrink: 0;
     padding: 0;
 }
@@ -104,7 +128,7 @@ GitHub: https://github.com/playingintraffic/pluck
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.5vh;
+    gap: 0;
     padding: 0;
 }
 
@@ -114,7 +138,6 @@ GitHub: https://github.com/playingintraffic/pluck
     align-items: center;
     overflow: hidden;
     box-sizing: border-box;
-    
 }
 
 .body_card_image_wrapper {
@@ -128,21 +151,22 @@ GitHub: https://github.com/playingintraffic/pluck
     height: 100%;
     object-fit: cover;
     display: block;
-    border: var(--border_dashed);
-    border-radius: var(--border_radius_inner);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
 }
 
 .body_card_info h4 {
-    font-size: 1.2rem;
-    color: var(--text_colour);
-    font-family: var(--header_font_family);
-    margin-left: 0.2vh;
+    font-size: 0.8rem;
+    color: var(--text_primary);
+    font-family: var(--header_font);
+    letter-spacing: 0.05rem;
+    margin: 0 0 0.25vh;
 }
 
 .body_card_info p {
-    font-size: 1rem;
-    color: var(--text_tertiary);
+    font-size: 0.7rem;
+    color: var(--text_secondary);
     margin: 0;
+    letter-spacing: 0.03rem;
 }
 
 .button_group.cards {

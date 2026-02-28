@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -19,7 +19,7 @@ GitHub: https://github.com/playingintraffic/pluck
     align-items: stretch;
     width: 100%;
     height: 8vh;
-    background: var(--gradient_fade_center);
+    background: var(--background_main);
     z-index: 11;
     font-family: var(--header_font);
     position: relative;
@@ -31,16 +31,15 @@ GitHub: https://github.com/playingintraffic/pluck
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.7;
+    height: 0.2vh;
+    background: var(--accent);
 }
 
 .header_section {
     display: flex;
     flex: 1;
     height: 100%;
-    margin: 0 3vw;
+    margin: 0 2vw;
 }
 
 .header_group {
@@ -63,19 +62,23 @@ GitHub: https://github.com/playingintraffic/pluck
     flex-direction: column;
     justify-content: center;
     color: var(--text_primary);
-    font-size: 1.75rem;
+    font-size: 1.2rem;
     font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
 }
 
 .header_text span {
-    font-size: 1rem;
+    font-size: 0.7rem;
     font-weight: normal;
     font-family: var(--text_font);
+    color: var(--text_secondary);
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
 }
 
 .header_tabs {
     display: flex;
-    gap: 1vh;
     height: 100%;
 }
 
@@ -85,17 +88,30 @@ GitHub: https://github.com/playingintraffic/pluck
     justify-content: center;
     height: 100%;
     padding: 0 2vh;
-    font-size: 1.5rem;
-    font-family: var(--header_font);
+    font-size: 0.75rem;
+    font-family: var(--text_font);
     text-transform: uppercase;
-    color: var(--text_primary);
-    opacity: 1;
+    letter-spacing: 0.1rem;
+    color: var(--text_secondary);
     cursor: pointer;
     border-bottom: 0.2vh solid transparent;
-    transition: border-color 0.2s, opacity 0.2s;
+    border-right: 0.1vh solid rgba(255, 255, 255, 0.04);
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    position: relative;
 }
 
-.header_tab:hover,
+.header_tab:first-child {
+    border-left: 0.1vh solid rgba(255, 255, 255, 0.04);
+}
+
+.header_tab:hover {
+    color: var(--text_primary);
+    background: var(--background_hover);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
 .header_tab.active {
-    border-bottom: 0.2vh solid var(--accent);
+    color: var(--accent);
+    background: var(--background_panel);
+    border-bottom-color: var(--accent);
 }

@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -16,10 +16,6 @@ GitHub: https://github.com/playingintraffic/pluck
 import { get_base_path } from "./../utils.js";
 
 export class AudioPlayer {
-    /**
-     * @param {boolean} [autoplay=true]
-     * @param {boolean} [randomize=true]
-     */
     constructor(autoplay = true, randomize = true) {
         this.audio = new Audio();
         this.tracklist = [];
@@ -32,7 +28,6 @@ export class AudioPlayer {
         this.init();
     }
 
-    /** @returns {Promise<void>} */
     async init() {
         const base = get_base_path();
         await this.load_json_data([`${base}/ui/data/tracklist.json`]);
@@ -47,10 +42,6 @@ export class AudioPlayer {
         this.play_song(this.current_index, this.autoplay);
     }
 
-    /**
-     * @param {Array<string>} file_paths
-     * @returns {Promise<void>}
-     */
     async load_json_data(file_paths) {
         const promises = file_paths.map(path => $.getJSON(path));
         try {
@@ -61,10 +52,6 @@ export class AudioPlayer {
         }
     }
 
-    /**
-     * @param {number} index
-     * @param {boolean} [autoplay=true]
-     */
     play_song(index, autoplay = true) {
         const song = this.tracklist[index];
         const base = get_base_path();
@@ -86,7 +73,6 @@ export class AudioPlayer {
         }
     }
 
-    /** @returns {void} */
     update_play_icon() {
         const icon = $("#toggle_play_pause i");
         if (!icon.length) return;
@@ -94,7 +80,6 @@ export class AudioPlayer {
         icon.removeClass("fa-play fa-pause").addClass("fa-solid").addClass(this.audio.paused ? "fa-play" : "fa-pause");
     }
 
-    /** @returns {string} HTML for audio player */
     get_html() {
         return `
             <div class="audio_player">
@@ -120,9 +105,6 @@ export class AudioPlayer {
         `;
     }
 
-    /**
-     * @param {Object} song
-     */
     update_ui(song) {
         const base = get_base_path();
         $("#progress_bar").css("width", "0%");
@@ -131,7 +113,6 @@ export class AudioPlayer {
         $("#current_song_artist").text(song.artist);
     }
 
-    /** @returns {void} */
     setup_controls() {
         this.audio.onended = () => {
             this.current_index = (this.current_index + 1) % this.tracklist.length;
@@ -174,7 +155,6 @@ export class AudioPlayer {
         this.update_volume_icon();
     }
 
-    /** @returns {void} */
     update_volume_icon() {
         const icon = $("#volume_control");
         icon.removeClass().addClass("fa");
@@ -184,7 +164,6 @@ export class AudioPlayer {
         else icon.addClass("fa-volume-up");
     }
 
-    /** @returns {void} */
     destroy() {
         if (this.audio) {
             this.audio.pause();

@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 ]]
@@ -128,7 +128,7 @@ if not pluck.is_server then
     local ClearDrawOrigin = ClearDrawOrigin
 
     --- @section Tables
-    
+
     local dui_locations = {}
 
     --- @section Functions
@@ -138,8 +138,8 @@ if not pluck.is_server then
     --- @return table: A table containing the DUI object and texture data.
     local function create_dui(location_id)
         local txd_name, txt_name = location_id, location_id
-        local ui_path = pluck.embedded_path and (pluck.embedded_path .. "/pluck/ui/index.html") or "/pluck/ui/index.html"
-        local dui_url = ("https://cfx-nui-%s%s"):format(pluck.resource_name, ui_path)
+        local ui_path = pluck.embedded_path and (pluck.embedded_path .. "/pluck/ui/dui.html") or "/pluck/ui/dui.html"
+        local dui_url = ("https://cfx-nui-%s/%s"):format(pluck.resource_name, ui_path)
         local screen_width, screen_height = GetActiveScreenResolution()
         local dui_object = CreateDui(dui_url, screen_width, screen_height)
         local txd = CreateRuntimeTxd(txd_name)
@@ -159,8 +159,6 @@ if not pluck.is_server then
         if not options.id or not options.coords or not options.header then return end
 
         local valid_keys = {}
-        local actions = {}
-        local action_counter = 0
 
         for _, key_data in ipairs(options.keys or {}) do
             local key_control = key_list[string.lower(key_data.key)]
@@ -176,20 +174,20 @@ if not pluck.is_server then
         end
 
         dui_locations[options.id] = {
-            _last_state = {},
-            actions = actions,
-            image = options.image or nil,
+            _state_dirty = true,
+            _last_outline_state = nil,
+            _last_access_check = 0,
+            _last_access_result = true,
             id = options.id,
             model = options.model,
             entity = entity or nil,
             coords = vector3(options.coords.x + 0.025, options.coords.y + 0.025, options.coords.z),
             header = options.header,
             icon = options.icon or "",
+            image = options.image or nil,
             keys = valid_keys,
             outline = options.outline,
             can_access = options.can_access,
-            _last_access_check = 0,
-            _last_access_result = true,
             dui_object = create_dui(options.id),
             in_proximity = false,
             is_destroyed = false,
@@ -228,14 +226,32 @@ if not pluck.is_server then
         end
     end
 
-    --- Renders a single zone"s DUI.
+    --- Toggles an entity's outline visibility.
+    --- Only calls natives when the state actually changes to avoid per-frame native overhead.
     --- @param location table: The location table.
-    --- @param player_coords vector3: The players coordinates.
+    --- @param state boolean: Whether to enable or disable the outline.
+    local function toggle_outline(location, state)
+        if location._last_outline_state == state then return end
+        location._last_outline_state = state
+
+        local entity = location.entity
+        if not entity or not DoesEntityExist(entity) then return end
+
+        SetEntityDrawOutline(entity, state)
+        if state then
+            SetEntityDrawOutlineColor(255, 255, 255, 255)
+            SetEntityDrawOutlineShader(1)
+        end
+    end
+
+    --- Renders a single zone's DUI.
+    --- Drawing happens every frame to prevent flickering.
+    --- SendDuiMessage is gated behind a dirty flag so we only encode and send when data actually changed.
+    --- @param location table: The location table.
+    --- @param player_coords vector3: The player's coordinates.
     local function render_dui(location, player_coords)
         if location.is_hidden then return end
-        if GetGameTimer() < (location.dui_object.initialized_at or 0) then
-            return
-        end
+        if GetGameTimer() < (location.dui_object.initialized_at or 0) then return end
 
         local dui = location.dui_object
         if not dui then return end
@@ -246,43 +262,27 @@ if not pluck.is_server then
             ClearDrawOrigin()
         end
 
-        local should_send = false
-        local payload = {
-            image = location.image or nil,
-            header = location.header,
-            model = location.model,
-            icon = location.icon,
-            keys = location.keys,
-            outline = location.outline,
-            is_destroyed = location.is_destroyed,
-            is_hidden = location.is_hidden,
-            additional = location.additional
-        }
-
-        for k, v in pairs(payload) do
-            if location._last_state[k] ~= v then
-                should_send = true
-                location._last_state[k] = v
+        if location._state_dirty then
+            location._state_dirty = false
+            local safe_keys = {}
+            for i = 1, #location.keys do
+                local k = location.keys[i]
+                safe_keys[i] = { key = k.key, label = k.label, key_control = k.key_control }
             end
-        end
-
-        if should_send then
-            local message = json.encode({ func = "show_dui", payload = payload })
-            SendDuiMessage(location.dui_object.dui_object, message)
-        end
-
-
-    end
-
-    --- Toggles an entitys outline visibility.
-    --- @param entity number: The entity ID.
-    --- @param state boolean: Whether to enable or disable the outline.
-    local function toggle_outline(entity, state)
-        if not entity or not DoesEntityExist(entity) then return end
-        SetEntityDrawOutline(entity, state)
-        if state then
-            SetEntityDrawOutlineColor(255, 255, 255, 255)
-            SetEntityDrawOutlineShader(1)
+            SendDuiMessage(dui.dui_object, json.encode({
+                func = "show_dui",
+                payload = {
+                    image = location.image,
+                    header = location.header,
+                    model = location.model,
+                    icon = location.icon,
+                    keys = safe_keys,
+                    outline = location.outline,
+                    is_destroyed = location.is_destroyed,
+                    is_hidden = location.is_hidden,
+                    additional = location.additional
+                }
+            }))
         end
     end
 
@@ -310,21 +310,21 @@ if not pluck.is_server then
             else
                 location[key] = value
             end
-
-            if key == "keys" then
-                location._last_state[key] = nil
-            end
         end
+
+        location._state_dirty = true
     end)
 
     --- @section Threads
 
-    --- Handles rendering DUI.
-    local function dui_render_loop()
+    --- Proximity check thread — runs on a slower tick to avoid iterating all zones every frame.
+    --- Updates in_proximity flag and handles access checks and outline state.
+    --- Separated from the render loop so drawing is never blocked by this work.
+    CreateThread(function()
         while true do
             local player_ped = PlayerPedId()
             local player_coords = GetEntityCoords(player_ped)
-            local found = false
+            local now = GetGameTimer()
 
             for _, location in pairs(dui_locations) do
                 if location.is_destroyed then
@@ -333,16 +333,11 @@ if not pluck.is_server then
                     local should_show = true
 
                     if location.can_access then
-                        local now = GetGameTimer()
-                        location._last_access_check = location._last_access_check or 0
-
                         if now - location._last_access_check > 2000 then
                             location._last_access_check = now
-
                             local ok, result = pcall(location.can_access)
                             location._last_access_result = ok and result == true
                         end
-
                         should_show = location._last_access_result
                     end
 
@@ -353,36 +348,88 @@ if not pluck.is_server then
                         local distance_squared = dx * dx + dy * dy + dz * dz
 
                         if distance_squared <= dui_range_squared then
-                            if not location.in_proximity then
-                                location.in_proximity = true
-                            end
-
-                            render_dui(location, player_coords)
-                            handle_key_presses(location)
-                            found = true
-
+                            location.in_proximity = true
                             if location.outline and location.entity then
-                                toggle_outline(location.entity, true)
+                                toggle_outline(location, true)
                             end
-                        elseif location.in_proximity then
+                        else
+                            if location.in_proximity then
+                                location.in_proximity = false
+                                if location.outline and location.entity then
+                                    toggle_outline(location, false)
+                                end
+                            end
+                        end
+                    else
+                        if location.in_proximity then
                             location.in_proximity = false
-
                             if location.outline and location.entity then
-                                toggle_outline(location.entity, false)
+                                toggle_outline(location, false)
                             end
                         end
                     end
                 end
             end
 
-            if found then Wait(0) else Wait(250) end
+            Wait(250)
         end
-    end
-
-
-    --- Inits render loop.
-    SetTimeout(2000, function()
-        CreateThread(dui_render_loop)
     end)
+
+    --- Render thread — runs every frame for zones in proximity so DUI never flickers.
+    --- Drawing and SendDuiMessage are handled here; proximity logic is on the slower tick above.
+    CreateThread(function()
+        while true do
+            local player_ped = PlayerPedId()
+            local player_coords = GetEntityCoords(player_ped)
+            local any_nearby = false
+
+            for _, location in pairs(dui_locations) do
+                if location.in_proximity and not location.is_hidden and not location.is_destroyed then
+                    render_dui(location, player_coords)
+                    handle_key_presses(location)
+                    any_nearby = true
+                end
+            end
+
+            Wait(any_nearby and 0 or 250)
+        end
+    end)
+
+    --- @section Test Commands
+
+    RegisterCommand("testdui", function()
+        local ped = PlayerPedId()
+        local coords = GetEntityCoords(ped)
+        local offsets = {
+            { x = 2.0,  y = 0.0  },
+            { x = -2.0, y = 0.0  },
+            { x = 0.0,  y = 2.0  },
+            { x = 0.0,  y = -2.0 },
+            { x = 2.0,  y = 2.0  },
+        }
+
+        for i, offset in ipairs(offsets) do
+            add_dui_zone({
+                id = ("test_zone_%d"):format(i),
+                coords = { x = coords.x + offset.x, y = coords.y + offset.y, z = coords.z },
+                header = ("Test Zone %d"):format(i),
+                icon = "fa-solid fa-star",
+                keys = {
+                    { key = "e", label = "Interact", on_action = function()
+                        print(("Zone %d interact pressed"):format(i))
+                    end }
+                }
+            })
+        end
+
+        print("^2[testdui] 5 zones spawned around player")
+    end, false)
+
+    RegisterCommand("cleardui", function()
+        for i = 1, 5 do
+            remove_dui_zone(("test_zone_%d"):format(i))
+        end
+        print("^2[cleardui] zones cleared")
+    end, false)
 
 end

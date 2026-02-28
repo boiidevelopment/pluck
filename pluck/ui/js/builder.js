@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -19,18 +19,7 @@ import { Header } from "./core/header.js"
 import { Sidebar } from "./core/sidebar.js"
 import { Tooltip } from "./core/tooltip.js"
 
-/**
- * @class Builder
- * @description Constructs the full UI layout with header, footer, sidebar, and content.
- */
 export class Builder {
-    /**
-     * @param {Object} config
-     * @param {Object} [config.header]
-     * @param {Object} [config.footer]
-     * @param {Object} [config.sidebar]
-     * @param {Object} [config.content]
-     */
     constructor({ header = null, footer = null, sidebar = null, content = {} }) {
         this.header_config = header; 
         this.footer_config = footer; 
@@ -42,7 +31,6 @@ export class Builder {
         this.build();
     }
 
-    /** @private Injects main containers and calls builders */
     build() {
         this.main_container.empty().append(`
             <div class="vignette"></div>
@@ -59,7 +47,6 @@ export class Builder {
         this.adjust_vignette(default_tab ?? null);
     }
 
-    /** @private Builds the header with tabs if defined */
     build_header() {
         if (!this.header_config) return;
 
@@ -77,22 +64,18 @@ export class Builder {
         this.header.trigger_default_tab?.();
     }
 
-
-    /** @private Builds the footer */
     build_footer() {
         if (!this.footer_config) return;
         this.footer = new Footer(this.footer_config);
         this.footer.append_to("#footer_container");
     }
 
-    /** @private Builds the sidebar */
     build_sidebar() {
         if (!this.sidebar_config || !Array.isArray(this.sidebar_config.sections) || !this.sidebar_config.sections.length) return;
         this.sidebar = new Sidebar(this.sidebar_config);
         this.sidebar.append_to("#sidebar_container");
     }
 
-    /** @private Builds the content area and shows default page */
     build_content() {
         if (!this.content_config.pages || typeof this.content_config.pages !== "object") return this.set_content();
         this.content = new Content(this.content_config.pages, "builder_content");
@@ -102,20 +85,17 @@ export class Builder {
         if (default_tab) this.content.show_page(default_tab).then(() => this.adjust_vignette(default_tab));
     }
 
-    /** @returns {string} Default tab ID if available */
     get_default_page() {
         const entries = Object.entries(this.content_config.pages || {}).filter(([_, c]) => typeof c === "object" && c.index !== undefined).sort((a, b) => (a[1].index ?? 999) - (b[1].index ?? 999));
 
         return entries.length ? entries[0][0] : null;
     }
 
-    /** Injects static HTML content directly */
     set_content() {
         const html = this.content_config.html || `<div class="placeholder_content">No content defined.</div>`;
         this.content?.set_content(html);
     }
 
-    /** Adjusts the vignette based on the layout of the current page */
     adjust_vignette(page_id) {
         const $vignette = $(".vignette");
 
@@ -147,7 +127,6 @@ export class Builder {
         }
     }
 
-    /** Destroys the current UI */
     destroy() {
         if ($("#tooltip").length) {
             $(document).off(".tooltip");
@@ -166,8 +145,7 @@ export class Builder {
         this.tooltip = null;
     }
 
-    /** Removes focus when closing */
     close() {
-        $.post(`https://pluck/nui:remove_focus`, JSON.stringify({}));
+        $.post(`https://${GetParentResourceName()}/nui:remove_focus`, JSON.stringify({}));
     }
 }

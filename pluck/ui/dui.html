@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/fonts.css">
+    <link rel="stylesheet" href="./css/themes/default.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        #dui_container {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .interact_ui {
+            position: relative;
+            height: fit-content;
+            min-width: fit-content;
+            max-width: 20vw;
+            background: var(--background_main);
+            border: 0.1vh solid rgba(255, 255, 255, 0.06);
+            border-top: 0.2vh solid var(--accent);
+            color: var(--text_primary);
+            font-size: 0.75rem;
+            pointer-events: none;
+            font-family: var(--text_font);
+        }
+
+        .interact_header {
+            display: flex;
+            align-items: center;
+            gap: 1vh;
+            width: 100%;
+            text-transform: uppercase;
+            padding: 0.75vh 1.25vh;
+            border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .header_text {
+            font-size: 0.78rem;
+            letter-spacing: 0.08rem;
+            color: var(--text_primary);
+        }
+
+        .interact_header i {
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .dui_image {
+            width: 3vh;
+            height: 3vh;
+            object-fit: contain;
+        }
+
+        .keys_container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+            align-items: flex-start;
+            border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+            padding: 0.5vh;
+        }
+
+        .dui_keys {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0.4vh 0.5vh;
+            gap: 0.75vh;
+            font-size: 0.68rem;
+            color: var(--text_secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04rem;
+        }
+
+        .dui_keys.full_row { grid-column: span 2; }
+
+        .dui_key {
+            background: var(--background_panel);
+            border: 0.1vh solid rgba(255, 255, 255, 0.08);
+            padding: 0.2vh 0.7vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            white-space: nowrap;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            flex-shrink: 0;
+        }
+
+        .progress_containers {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1vh;
+            padding: 1vh;
+            border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+        }
+
+        .progress_item { width: 100%; }
+        .progress_item.full_row { grid-column: span 2; }
+
+        .progress_item h3 {
+            font-size: 0.68rem;
+            font-weight: normal;
+            position: relative;
+            display: flex;
+            padding-left: 0.75vh;
+            padding-bottom: 0.25vh;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            color: var(--text_secondary);
+            border-bottom: 0.1vh solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 0.5vh;
+        }
+
+        .progress_item h3::before {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            content: "";
+            width: 0.2vh;
+            height: 100%;
+            background: var(--accent);
+        }
+
+        .interact_progress_header {
+            position: absolute;
+            display: flex;
+            width: 96%;
+            height: 100%;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 0.5rem;
+            color: var(--text_secondary);
+            letter-spacing: 0.03rem;
+        }
+
+        .interact_progress_bar {
+            width: 100%;
+            height: 1vh;
+            background: var(--background_overlay);
+            position: relative;
+            overflow: hidden;
+            margin-top: 0.5vh;
+        }
+
+        .interact_progress_bar_fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .values_list {
+            list-style: none;
+            color: var(--text_secondary);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 0.5vh;
+        }
+
+        .values_list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5vh;
+            padding: 0.4vh 0.5vh;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04rem;
+            border-bottom: 0.1vh solid rgba(255, 255, 255, 0.04);
+        }
+
+        .values_list li:last-child { border-bottom: none; }
+    </style>
+</head>
+<body class="default">
+    <div id="dui_container"></div>
+    <script type="module">
+        import { DUISprite } from './js/components/dui_sprite.js';
+
+        window.addEventListener('message', (event) => {
+            const { func, payload } = event.data;
+            if (!func) return;
+            if (func === 'show_dui') {
+                new DUISprite(payload);
+            } else if (func === 'close_dui') {
+                $('#dui_container').empty();
+            }
+        });
+    </script>
+</body>
+</html>

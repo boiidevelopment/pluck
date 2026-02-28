@@ -1,4 +1,18 @@
-/* Container */
+/*
+--------------------------------------------------
+
+This file is part of PLUCK.
+You are free to use these files within your own resources.
+Please retain the original credit and attached MIT license.
+Support honest development.
+
+Author: Case @ BOII Development
+License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
+GitHub: https://github.com/boiidevelopment/pluck
+
+--------------------------------------------------
+*/
+
 .content_grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -9,11 +23,10 @@
     box-sizing: border-box;
     color: var(--text_primary);
     font-family: var(--text_font);
-    background: rgba(0, 0, 0, 0.0);
+    background: transparent;
     z-index: 11;
 }
 
-/* Sections */
 .content_section {
     position: relative;
     display: flex;
@@ -29,53 +42,55 @@
     width: 100%;
 }
 
-/* Titles */
 .content_title {
     width: 100%;
 }
+
 .content_title h3 {
     width: 100%;
     display: flex;
     color: var(--text_primary);
     font-family: var(--header_font);
-    font-size: 1.8rem;
-    padding: 1px;
+    font-size: 1rem;
     padding-bottom: 0.5vh;
-    padding-right: 0.5vh;
     font-weight: normal;
     position: relative;
     margin-bottom: 1vh;
-    text-shadow: var(--text_shadow);
     justify-content: space-between;
     align-items: center;
     text-transform: uppercase;
+    letter-spacing: 0.1rem;
 }
+
 .content_title h3::after {
     position: absolute;
-    bottom: 0.1vh;
+    bottom: 0;
     left: 0;
     content: "";
     width: 100%;
     height: 0.1vh;
-    background: var(--text_tertiary);
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .content_title span {
     background: var(--background_panel);
-    padding: 0.5vh 1vh;
-    font-size: 0.85rem;
-    border-radius: var(--border_radius_inner);
-    border: var(--border_dashed);
+    border: 0.1vh solid rgba(255, 255, 255, 0.08);
+    border-left: 0.2vh solid var(--accent);
+    padding: 0.3vh 0.8vh;
+    font-size: 0.7rem;
     display: flex;
     align-items: center;
+    gap: 0.5vh;
+    letter-spacing: 0.05rem;
+    color: var(--text_secondary);
+    font-family: var(--text_font);
 }
 
 .content_title span i {
-    margin-right: 0.5vh;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    color: var(--accent);
 }
 
-/* Body */
 .content_body {
     flex-grow: 1;
     height: 100%;
@@ -83,4 +98,5 @@
     display: flex;
     flex-direction: column;
     gap: 1vh;
+    scrollbar-width: none;
 }

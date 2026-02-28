@@ -8,7 +8,7 @@ Support honest development.
 
 Author: Case @ BOII Development
 License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
-GitHub: https://github.com/playingintraffic/pluck
+GitHub: https://github.com/boiidevelopment/pluck
 
 --------------------------------------------------
 */
@@ -27,47 +27,29 @@ export class ActionMenu {
         this.bind_exit_event();
     }
 
-    /**
-     * Binds the exit event for closing the menu.
-     */
     bind_exit_event() {
         $(document).ready(() => {
             $(document).keyup((e) => this.handle_exit(e));
         });
     }
 
-    /**
-     * Handles exiting the menu via keypress.
-     * @param {Event} e - The keyup event.
-     */
     handle_exit(e) {
         if (e.key === 'Escape' || e.key === 'Backspace') {
             this.close();
         }
     }
 
-    /**
-     * Creates the main container for the action menu.
-     */
     create_menu_container() {
         this.menu_container = $('<div>').addClass('action_menu_container');
         $('#ui_main').append(this.menu_container);
     }
 
-    /**
-     * Creates and displays a menu with given actions.
-     * @param {Array} actions - The menu actions to display.
-     */
     create_menu(actions) {
         this.menu_stack.push(actions);
         this.render_menu(actions);
         this.is_menu_active = true;
     }
 
-    /**
-     * Renders the current menu based on the stack.
-     * @param {Array} actions - The menu actions to render.
-     */
     render_menu(actions) {
         const colour = this.default_settings.icon_colour;
         this.menu_container.empty();
@@ -89,12 +71,6 @@ export class ActionMenu {
         this.menu_container.append(menu_left, center_button, menu_right);
     }
 
-    /**
-     * Creates a single action element.
-     * @param {Object} action - The action details.
-     * @param {number} index - The index of the action.
-     * @returns {Object} jQuery object for the action element.
-     */
     create_action_element(action, index) {
         const colour = action.colour || this.default_settings.icon_colour;
         const font = this.default_settings.font;
@@ -109,11 +85,6 @@ export class ActionMenu {
         return action_html;
     }
 
-    /**
-     * Adjusts the position of actions within the menu.
-     * @param {Object} menu_left - The left menu container.
-     * @param {Object} menu_right - The right menu container.
-     */
     adjust_action_positions(menu_left, menu_right) {
         const count_left = menu_left.children().length;
         const count_right = menu_right.children().length;
@@ -133,10 +104,6 @@ export class ActionMenu {
         }
     }
 
-    /**
-     * Handles the click event for an action.
-     * @param {Object} action - The action details.
-     */
     async handle_action_click(action) {
         if (action.submenu) {
             this.create_menu(action.submenu);
@@ -151,9 +118,6 @@ export class ActionMenu {
         }
     }
 
-    /**
-     * Handles the center button click to navigate back or close the menu.
-     */
     handle_center_button_click() {
         if (this.menu_stack.length > 1) {
             this.menu_stack.pop();
@@ -163,9 +127,6 @@ export class ActionMenu {
         }
     }
 
-    /**
-     * Closes the menu and clears the stack.
-     */
     close() {
         this.menu_container.empty();
         this.menu_stack = [];

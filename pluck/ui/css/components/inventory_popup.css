@@ -1,0 +1,110 @@
+/*
+--------------------------------------------------
+
+This file is part of PLUCK.
+You are free to use these files within your own resources.
+Please retain the original credit and attached MIT license.
+Support honest development.
+
+Author: Case @ BOII Development
+License: https://github.com/boiidevelopment/pluck/blob/main/LICENSE
+GitHub: https://github.com/boiidevelopment/pluck
+
+--------------------------------------------------
+*/
+
+.slot_popups {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    pointer-events: none;
+    z-index: 10000;
+}
+
+.slot_popups_top-center {
+    top: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.slot_popups_bottom-center {
+    bottom: 12vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.inventory_popup {
+    opacity: 0;
+    transform: translateY(-1vh);
+    transition: all 0.3s ease;
+}
+
+.inventory_popup.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slot_popup_inner {
+    position: relative;
+    width: 6.4vh;
+    height: 6.4vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--background_main);
+    border: 0.1vh solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.slot_popup_inner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.inventory_popup.rarity_common    .slot_popup_inner::before { background: linear-gradient(to top, var(--rarity_common), transparent 70%); }
+.inventory_popup.rarity_uncommon  .slot_popup_inner::before { background: linear-gradient(to top, var(--rarity_uncommon), transparent 70%); }
+.inventory_popup.rarity_rare      .slot_popup_inner::before { background: linear-gradient(to top, var(--rarity_rare), transparent 70%); }
+.inventory_popup.rarity_epic      .slot_popup_inner::before { background: linear-gradient(to top, var(--rarity_epic), transparent 70%); }
+.inventory_popup.rarity_legendary .slot_popup_inner::before { background: linear-gradient(to top, var(--rarity_legendary), transparent 70%); }
+
+.inventory_popup.rarity_common    .slot_popup_inner { border-color: var(--rarity_common); }
+.inventory_popup.rarity_uncommon  .slot_popup_inner { border-color: var(--rarity_uncommon); }
+.inventory_popup.rarity_rare      .slot_popup_inner { border-color: var(--rarity_rare); }
+.inventory_popup.rarity_epic      .slot_popup_inner { border-color: var(--rarity_epic); }
+.inventory_popup.rarity_legendary .slot_popup_inner { border-color: var(--rarity_legendary); }
+
+.slot_popup_image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.slot_popup_image img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.slot_popup_quantity {
+    position: absolute;
+    bottom: 0.1vh;
+    right: 0.3vh;
+    font-family: var(--text_font);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.03rem;
+    z-index: 3;
+}
+
+.slot_popup_quantity.action_added   { color: var(--notify_success); }
+.slot_popup_quantity.action_removed { color: var(--notify_error); }
